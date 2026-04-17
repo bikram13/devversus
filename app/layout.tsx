@@ -116,10 +116,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
 
             <div className="mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs" style={{ borderTop: '1px solid var(--border)', color: 'var(--foreground-muted)' }}>
-              <p>© {new Date().getFullYear()} DevVersus. Independent tool comparisons — no vendor bias.</p>
-              <div className="flex items-center gap-1.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
-                <span>All systems operational</span>
+              <p>© {new Date().getFullYear()} DevVersus. Operated by Bikram, Pune, India. Independent tool comparisons — no vendor bias.</p>
+              <div className="flex items-center gap-4">
+                <Link href="/about"   className="nav-link">About</Link>
+                <Link href="/privacy" className="nav-link">Privacy</Link>
+                <Link href="/terms"   className="nav-link">Terms</Link>
               </div>
             </div>
           </div>
