@@ -1,5 +1,10 @@
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import { CATEGORIES, TOOLS, getAllComparisons, getAllAlternativePages } from '@/data/tools'
+
+export const metadata: Metadata = {
+  alternates: { canonical: 'https://devversus.com' },
+}
 
 export default function HomePage() {
   const comparisons  = getAllComparisons()
@@ -27,7 +32,7 @@ export default function HomePage() {
           <span className="gradient-text">Compare Dev Tools.</span>
           <br />
           <span style={{ color: 'var(--foreground-muted)', fontSize: '0.88em', fontWeight: 700 }}>
-            Make the right call.
+            {' '}Make the right call.
           </span>
         </h1>
 

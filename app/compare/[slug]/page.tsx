@@ -2,6 +2,8 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getAllComparisons, getToolBySlug, getCategoryForTool } from '@/data/tools'
+import AffiliateDisclosure from '@/components/AffiliateDisclosure'
+import ToolLogo from '@/components/ToolLogo'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -93,7 +95,7 @@ export default async function ComparePage({ params }: Props) {
         name: `How much does ${tool1.name} cost compared to ${tool2.name}?`,
         acceptedAnswer: {
           '@type': 'Answer',
-          text: `${tool1.name} is ${tool1.pricing}${tool1.startingPrice ? `, starting at ${tool1.startingPrice}/month` : ''}. ${tool2.name} is ${tool2.pricing}${tool2.startingPrice ? `, starting at ${tool2.startingPrice}/month` : ''}.`,
+          text: `${tool1.name} is ${tool1.pricing}${tool1.startingPrice ? `, starting at ${tool1.startingPrice}` : ''}. ${tool2.name} is ${tool2.pricing}${tool2.startingPrice ? `, starting at ${tool2.startingPrice}` : ''}.`,
         },
       },
       {
@@ -129,7 +131,7 @@ export default async function ComparePage({ params }: Props) {
     <div className="max-w-5xl mx-auto px-5 py-12">
 
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
         <Link href="/" className="hover:text-white transition-colors">Home</Link>
         <span>/</span>
         {category && (
@@ -158,16 +160,15 @@ export default async function ComparePage({ params }: Props) {
         </p>
       </div>
 
+      <AffiliateDisclosure />
+
       {/* Quick-verdict cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-14">
         {[tool1, tool2].map((tool, idx) => (
           <div key={tool.slug} className="card p-7" style={{ borderColor: idx === 0 ? 'rgba(99,102,241,0.3)' : 'rgba(139,92,246,0.3)' }}>
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm"
-                  style={{ background: idx === 0 ? 'rgba(99,102,241,0.15)' : 'rgba(139,92,246,0.15)', color: idx === 0 ? '#a5b4fc' : '#c084fc' }}>
-                  {tool.name.charAt(0)}
-                </div>
+                <ToolLogo domain={tool.website} name={tool.name} size={40} />
                 <h2 className="text-xl font-bold text-white">{tool.name}</h2>
               </div>
               <PricingBadge label={tool.pricing} />
@@ -187,7 +188,7 @@ export default async function ComparePage({ params }: Props) {
             <a
               href={tool.affiliateUrl ?? tool.website}
               target="_blank"
-              rel="noopener noreferrer"
+              rel="noopener noreferrer nofollow sponsored"
               className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200"
               style={{
                 background: idx === 0 ? 'var(--accent)' : 'rgba(139,92,246,0.8)',

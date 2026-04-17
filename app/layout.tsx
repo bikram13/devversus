@@ -36,7 +36,7 @@ const orgSchema = {
       description: 'Compare developer tools side by side. Pricing, features, pros & cons.',
       potentialAction: {
         '@type': 'SearchAction',
-        target: 'https://devversus.com/compare/{search_term_string}',
+        target: 'https://devversus.com/comparisons?q={search_term_string}',
         'query-input': 'required name=search_term_string',
       },
     },
@@ -47,6 +47,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const searchItems = buildSearchIndex()
   return (
     <html lang="en" className={inter.variable}>
+      <head>
+        <link rel="preconnect" href="https://logo.clearbit.com" />
+      </head>
       <body>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         {/* Ambient background blobs */}
@@ -74,7 +77,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </span>
             </Link>
 
-            <nav className="hidden md:flex items-center gap-6">
+            <nav aria-label="Main navigation" className="hidden md:flex items-center gap-6">
               <Link href="/categories"          className="nav-link">Categories</Link>
               <Link href="/comparisons"         className="nav-link">Comparisons</Link>
               <Link href="/category/ai-api"     className="nav-link">AI APIs</Link>
@@ -121,6 +124,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/about"   className="nav-link">About</Link>
                 <Link href="/privacy" className="nav-link">Privacy</Link>
                 <Link href="/terms"   className="nav-link">Terms</Link>
+                <Link href="/contact" className="nav-link">Contact</Link>
               </div>
             </div>
           </div>

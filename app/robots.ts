@@ -9,6 +9,5 @@ export default function robots(): MetadataRoute.Robots {
       },
     ],
     sitemap: 'https://devversus.com/sitemap.xml',
-    host: 'https://devversus.com',
   }
 }

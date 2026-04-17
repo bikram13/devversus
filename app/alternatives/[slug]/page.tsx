@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getToolBySlug, getCategoryForTool, getAllAlternativePages } from '@/data/tools'
+import AffiliateDisclosure from '@/components/AffiliateDisclosure'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -117,7 +118,7 @@ export default async function AlternativesPage({ params }: Props) {
     <div className="max-w-4xl mx-auto px-5 py-12">
 
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
         <Link href="/" className="hover:text-white transition-colors">Home</Link>
         <span>/</span>
         {category && (
@@ -143,6 +144,8 @@ export default async function AlternativesPage({ params }: Props) {
         </p>
       </div>
 
+      <AffiliateDisclosure />
+
       {/* Original tool card — "you're replacing" */}
       <div className="card p-6 mb-10" style={{ borderColor: 'rgba(251,146,60,0.25)', background: 'rgba(251,146,60,0.04)' }}>
         <div className="flex items-start justify-between gap-4">
@@ -164,7 +167,7 @@ export default async function AlternativesPage({ params }: Props) {
           <a
             href={tool.website}
             target="_blank"
-            rel="noopener noreferrer"
+            rel="noopener noreferrer nofollow sponsored"
             className="shrink-0 text-xs px-3 py-1.5 rounded-lg transition-all duration-200"
             style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--foreground-muted)' }}
           >
@@ -203,7 +206,7 @@ export default async function AlternativesPage({ params }: Props) {
                 </span>
                 <div>
                   <div className="flex items-center gap-2.5 flex-wrap">
-                    <h3 className="text-lg font-bold text-white">{alt!.name}</h3>
+                    <h2 className="text-lg font-bold text-white">{alt!.name}</h2>
                     <PricingBadge label={alt!.pricing} />
                   </div>
                   {alt!.startingPrice && (
@@ -224,7 +227,7 @@ export default async function AlternativesPage({ params }: Props) {
                 <a
                   href={alt!.affiliateUrl ?? alt!.website}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel="noopener noreferrer nofollow sponsored"
                   className="text-xs px-3 py-1.5 rounded-lg transition-all duration-200"
                   style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--foreground-muted)' }}
                 >
