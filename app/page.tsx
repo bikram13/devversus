@@ -54,18 +54,18 @@ export default function HomePage() {
         {/* CTA buttons */}
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Link
-            href="/category/hosting"
+            href="/categories"
             className="px-6 py-3 rounded-xl font-semibold text-sm text-white transition-all duration-200"
             style={{ background: 'var(--accent)', boxShadow: '0 0 28px rgba(99,102,241,0.45)' }}
           >
             Browse Categories →
           </Link>
           <Link
-            href="/compare/vercel-vs-netlify"
+            href="/comparisons"
             className="px-6 py-3 rounded-xl font-semibold text-sm transition-all duration-200"
             style={{ background: 'var(--surface)', border: '1px solid var(--border)', color: 'var(--foreground)' }}
           >
-            Try a comparison
+            Browse Comparisons →
           </Link>
         </div>
       </section>
