@@ -23,7 +23,10 @@ export interface Category {
   toolSlugs: string[]
 }
 
-export const TOOLS: Tool[] = [
+import { EXTRA_TOOLS_1 } from './tools-extra'
+import { EXTRA_TOOLS_2 } from './tools-extra2'
+
+const BASE_TOOLS: Tool[] = [
   // HOSTING / DEPLOYMENT
   {
     slug: 'vercel',
@@ -1371,34 +1374,64 @@ export const TOOLS: Tool[] = [
   },
 ]
 
+export const TOOLS: Tool[] = [...BASE_TOOLS, ...EXTRA_TOOLS_1, ...EXTRA_TOOLS_2]
+
 export const CATEGORIES: Category[] = [
+  // ── Existing 27 categories (expanded to 7 tools each) ──
   { slug: 'hosting', name: 'Hosting & Deployment', description: 'Deploy and host your web applications and APIs in the cloud.', toolSlugs: ['vercel', 'netlify', 'railway', 'render', 'flyio', 'heroku', 'cloudflare-pages'] },
-  { slug: 'payments', name: 'Payment Gateways', description: 'Accept payments, manage subscriptions, and handle billing for your SaaS.', toolSlugs: ['stripe', 'paddle', 'lemon-squeezy', 'gumroad'] },
+  { slug: 'payments', name: 'Payment Gateways', description: 'Accept payments, manage subscriptions, and handle billing for your SaaS.', toolSlugs: ['stripe', 'paddle', 'lemon-squeezy', 'gumroad', 'braintree', 'square', 'mollie'] },
   { slug: 'database', name: 'Databases', description: 'Managed databases and serverless data stores for modern applications.', toolSlugs: ['supabase', 'neon', 'planetscale', 'turso', 'mongodb', 'firebase', 'redis', 'cockroachdb'] },
-  { slug: 'auth', name: 'Authentication', description: 'Add user authentication, social logins, and identity management.', toolSlugs: ['clerk', 'auth0', 'nextauth', 'workos', 'kinde'] },
-  { slug: 'email', name: 'Email APIs', description: 'Send transactional emails reliably with developer-friendly APIs.', toolSlugs: ['resend', 'sendgrid', 'postmark', 'mailgun', 'aws-ses'] },
-  { slug: 'monitoring', name: 'Monitoring & Error Tracking', description: 'Track errors, monitor performance, and get alerted when things break.', toolSlugs: ['sentry', 'datadog', 'newrelic', 'grafana', 'betterstack', 'opentelemetry'] },
-  { slug: 'analytics', name: 'Product Analytics', description: 'Understand how users interact with your product.', toolSlugs: ['posthog', 'plausible', 'mixpanel', 'google-analytics'] },
-  { slug: 'cicd', name: 'CI/CD', description: 'Automate testing, building, and deployment of your applications.', toolSlugs: ['github-actions', 'circleci', 'gitlab-ci', 'jenkins'] },
-  { slug: 'ai-api', name: 'AI APIs', description: 'Add AI capabilities to your applications with leading model providers.', toolSlugs: ['openai', 'anthropic', 'groq', 'google-gemini', 'together-ai', 'mistral'] },
-  { slug: 'cms', name: 'Headless CMS', description: 'Manage structured content for your web and mobile applications.', toolSlugs: ['sanity', 'contentful', 'strapi', 'payload'] },
-  { slug: 'search', name: 'Search', description: 'Add fast, typo-tolerant search to your application.', toolSlugs: ['algolia', 'typesense', 'meilisearch'] },
-  { slug: 'orm', name: 'ORM & Query Builders', description: 'Type-safe database access for TypeScript and Node.js applications.', toolSlugs: ['prisma', 'drizzle'] },
-  { slug: 'storage', name: 'Object Storage', description: 'Store files, images, and large assets in the cloud.', toolSlugs: ['cloudflare-r2', 'aws-s3', 'backblaze-b2'] },
-  { slug: 'testing', name: 'Testing', description: 'Automated testing frameworks for reliable web applications.', toolSlugs: ['playwright', 'cypress'] },
-  { slug: 'feature-flags', name: 'Feature Flags', description: 'Roll out features safely with flags, targeting, and A/B testing.', toolSlugs: ['growthbook', 'launchdarkly'] },
-  { slug: 'version-control', name: 'Version Control', description: 'Host your Git repositories and collaborate on code.', toolSlugs: ['github', 'gitlab', 'bitbucket'] },
-  { slug: 'logging', name: 'Logging & Observability', description: 'Collect, query, and visualize logs from your applications.', toolSlugs: ['axiom', 'logrocket', 'betterstack'] },
-  { slug: 'realtime', name: 'Realtime & WebSockets', description: 'Add live features to your app with managed WebSocket infrastructure.', toolSlugs: ['pusher', 'ably'] },
-  { slug: 'notifications', name: 'Notifications & SMS', description: 'Send multi-channel notifications to your users.', toolSlugs: ['resend-notifications', 'twilio'] },
-  { slug: 'queue-jobs', name: 'Background Jobs & Queues', description: 'Run background jobs, cron tasks, and async workflows reliably.', toolSlugs: ['inngest', 'trigger-dev'] },
-  { slug: 'secrets', name: 'Secrets Management', description: 'Securely store and sync API keys and secrets across environments.', toolSlugs: ['doppler', 'infisical'] },
-  { slug: 'ecommerce', name: 'E-commerce', description: 'Build and run online stores with payments, inventory, and shipping.', toolSlugs: ['shopify', 'woocommerce', 'medusa'] },
-  { slug: 'cdn', name: 'CDN & Edge', description: 'Deliver content fast with global CDN and edge computing.', toolSlugs: ['cloudflare', 'fastly'] },
-  { slug: 'documentation', name: 'Documentation', description: 'Create beautiful product and API documentation for your users.', toolSlugs: ['gitbook', 'mintlify'] },
-  { slug: 'subscription', name: 'Subscription Management', description: 'Manage subscriptions, dunning, revenue recognition, and billing.', toolSlugs: ['chargebee'] },
-  { slug: 'low-code', name: 'Low-Code & Internal Tools', description: 'Build admin panels and internal tools without full-stack engineering.', toolSlugs: ['retool', 'appsmith'] },
-  { slug: 'design', name: 'Design Tools', description: 'Design, prototype, and ship beautiful product interfaces.', toolSlugs: ['figma', 'framer', 'webflow'] },
+  { slug: 'auth', name: 'Authentication', description: 'Add user authentication, social logins, and identity management.', toolSlugs: ['clerk', 'auth0', 'nextauth', 'workos', 'kinde', 'better-auth', 'stytch'] },
+  { slug: 'email', name: 'Email APIs', description: 'Send transactional emails reliably with developer-friendly APIs.', toolSlugs: ['resend', 'sendgrid', 'postmark', 'mailgun', 'aws-ses', 'brevo', 'loops'] },
+  { slug: 'monitoring', name: 'Monitoring & Error Tracking', description: 'Track errors, monitor performance, and get alerted when things break.', toolSlugs: ['sentry', 'datadog', 'newrelic', 'grafana', 'betterstack', 'opentelemetry', 'uptimerobot'] },
+  { slug: 'analytics', name: 'Product Analytics', description: 'Understand how users interact with your product.', toolSlugs: ['posthog', 'plausible', 'mixpanel', 'google-analytics', 'amplitude', 'segment', 'heap'] },
+  { slug: 'cicd', name: 'CI/CD', description: 'Automate testing, building, and deployment of your applications.', toolSlugs: ['github-actions', 'circleci', 'gitlab-ci', 'jenkins', 'buildkite', 'travis-ci', 'drone-ci'] },
+  { slug: 'ai-api', name: 'AI APIs', description: 'Add AI capabilities to your applications with leading model providers.', toolSlugs: ['openai', 'anthropic', 'groq', 'google-gemini', 'together-ai', 'mistral', 'cohere'] },
+  { slug: 'cms', name: 'Headless CMS', description: 'Manage structured content for your web and mobile applications.', toolSlugs: ['sanity', 'contentful', 'strapi', 'payload', 'directus', 'storyblok', 'ghost-cms'] },
+  { slug: 'search', name: 'Search', description: 'Add fast, typo-tolerant search to your application.', toolSlugs: ['algolia', 'typesense', 'meilisearch', 'elasticsearch', 'opensearch', 'zinc-search', 'manticoresearch'] },
+  { slug: 'orm', name: 'ORM & Query Builders', description: 'Type-safe database access for TypeScript and Node.js applications.', toolSlugs: ['prisma', 'drizzle', 'typeorm', 'kysely', 'sequelize', 'mongoose', 'mikro-orm'] },
+  { slug: 'storage', name: 'Object Storage', description: 'Store files, images, and large assets in the cloud.', toolSlugs: ['cloudflare-r2', 'aws-s3', 'backblaze-b2', 'supabase-storage', 'cloudinary', 'uploadcare', 'bunny-net'] },
+  { slug: 'testing', name: 'Testing', description: 'Automated testing frameworks for reliable web applications.', toolSlugs: ['playwright', 'cypress', 'jest', 'vitest', 'selenium', 'webdriverio', 'k6'] },
+  { slug: 'feature-flags', name: 'Feature Flags', description: 'Roll out features safely with flags, targeting, and A/B testing.', toolSlugs: ['growthbook', 'launchdarkly', 'flagsmith', 'split-io', 'unleash', 'statsig', 'flipt'] },
+  { slug: 'version-control', name: 'Version Control', description: 'Host your Git repositories and collaborate on code.', toolSlugs: ['github', 'gitlab', 'bitbucket', 'gitea', 'forgejo', 'azure-devops', 'codeberg'] },
+  { slug: 'logging', name: 'Logging & Observability', description: 'Collect, query, and visualize logs from your applications.', toolSlugs: ['axiom', 'logrocket', 'betterstack', 'papertrail', 'logflare', 'highlight-io', 'seq-log'] },
+  { slug: 'realtime', name: 'Realtime & WebSockets', description: 'Add live features to your app with managed WebSocket infrastructure.', toolSlugs: ['pusher', 'ably', 'soketi', 'supabase-realtime', 'liveblocks', 'partykit', 'convex'] },
+  { slug: 'notifications', name: 'Notifications & SMS', description: 'Send multi-channel notifications to your users.', toolSlugs: ['resend-notifications', 'twilio', 'novu', 'knock', 'onesignal', 'sendbird', 'courier'] },
+  { slug: 'queue-jobs', name: 'Background Jobs & Queues', description: 'Run background jobs, cron tasks, and async workflows reliably.', toolSlugs: ['inngest', 'trigger-dev', 'bullmq', 'temporal', 'sidekiq', 'quirrel', 'cloudtasks'] },
+  { slug: 'secrets', name: 'Secrets Management', description: 'Securely store and sync API keys and secrets across environments.', toolSlugs: ['doppler', 'infisical', 'hashicorp-vault', 'aws-secrets-manager', 'bitwarden-secrets', 'akeyless', 'azure-key-vault'] },
+  { slug: 'ecommerce', name: 'E-commerce', description: 'Build and run online stores with payments, inventory, and shipping.', toolSlugs: ['shopify', 'woocommerce', 'medusa', 'bigcommerce', 'saleor', 'vendure', 'ecwid'] },
+  { slug: 'cdn', name: 'CDN & Edge', description: 'Deliver content fast with global CDN and edge computing.', toolSlugs: ['cloudflare', 'fastly', 'bunny-cdn', 'aws-cloudfront', 'akamai', 'keycdn', 'limelight'] },
+  { slug: 'documentation', name: 'Documentation', description: 'Create beautiful product and API documentation for your users.', toolSlugs: ['gitbook', 'mintlify', 'docusaurus', 'readme-io', 'nextra', 'confluence', 'notion-docs'] },
+  { slug: 'subscription', name: 'Subscription Management', description: 'Manage subscriptions, dunning, revenue recognition, and billing.', toolSlugs: ['chargebee', 'recurly', 'stripe-billing', 'revenuecat', 'lago', 'maxio', 'zuora'] },
+  { slug: 'low-code', name: 'Low-Code & Internal Tools', description: 'Build admin panels and internal tools without full-stack engineering.', toolSlugs: ['retool', 'appsmith', 'budibase', 'tooljet', 'internal-io', 'superblocks', 'jet-admin'] },
+  { slug: 'design', name: 'Design Tools', description: 'Design, prototype, and ship beautiful product interfaces.', toolSlugs: ['figma', 'framer', 'webflow', 'sketch', 'penpot', 'canva', 'adobe-xd'] },
+
+  // ── 25 new categories ──
+  { slug: 'error-tracking', name: 'Error Tracking', description: 'Monitor application errors and crashes with full diagnostic context.', toolSlugs: ['sentry', 'bugsnag', 'rollbar', 'airbrake', 'honeybadger', 'raygun', 'glitchtip'] },
+  { slug: 'workflow-automation', name: 'Workflow Automation', description: 'Automate repetitive tasks and connect apps without writing backend code.', toolSlugs: ['zapier', 'make', 'n8n', 'activepieces', 'pipedream', 'windmill', 'kestra'] },
+  { slug: 'customer-support', name: 'Customer Support', description: 'Manage customer conversations and support tickets across channels.', toolSlugs: ['intercom', 'zendesk', 'freshdesk', 'crisp', 'helpscout', 'front', 'kayako'] },
+  { slug: 'newsletter', name: 'Newsletter Platforms', description: 'Publish newsletters and grow a paying subscriber audience.', toolSlugs: ['beehiiv', 'substack', 'convertkit', 'mailchimp-nl', 'ghost-nl', 'buttondown'] },
+  { slug: 'form-builder', name: 'Form Builders', description: 'Create forms, surveys, and collect data without backend code.', toolSlugs: ['typeform', 'jotform', 'tally', 'paperform', 'formspree', 'fillout', 'surveymonkey'] },
+  { slug: 'vector-db', name: 'Vector Databases', description: 'Store and search high-dimensional embeddings for AI applications.', toolSlugs: ['pinecone', 'weaviate', 'chroma', 'qdrant', 'pgvector', 'milvus', 'marqo'] },
+  { slug: 'ai-coding', name: 'AI Coding Tools', description: 'Accelerate development with AI code completion, editing, and agents.', toolSlugs: ['cursor-ai', 'github-copilot', 'codeium', 'tabnine', 'continue-dev', 'supermaven', 'aider'] },
+  { slug: 'llm-framework', name: 'LLM Frameworks', description: 'Build LLM-powered applications with chains, agents, and RAG pipelines.', toolSlugs: ['langchain', 'llamaindex', 'haystack', 'semantic-kernel', 'autogen', 'crewai', 'vercel-ai'] },
+  { slug: 'caching', name: 'Caching', description: 'Speed up applications with in-memory caching and data stores.', toolSlugs: ['memcached', 'upstash-redis', 'dragonfly', 'keydb', 'momento', 'garnet', 'varnish'] },
+  { slug: 'maps', name: 'Maps & Location', description: 'Add maps, geocoding, and location services to your applications.', toolSlugs: ['google-maps', 'mapbox', 'here-maps', 'tomtom', 'openstreetmap-api', 'maptiler', 'leafletjs'] },
+  { slug: 'translation', name: 'Translation & Localization', description: 'Translate and localize your app for a global audience.', toolSlugs: ['deepl', 'crowdin', 'phrase', 'lokalise', 'transifex', 'weblate', 'smartling'] },
+  { slug: 'project-management', name: 'Project Management', description: 'Track tasks, sprints, and roadmaps for engineering teams.', toolSlugs: ['linear', 'jira', 'asana', 'notion-pm', 'basecamp', 'clickup', 'height'] },
+  { slug: 'video', name: 'Video APIs', description: 'Host, transcode, and stream video content in your applications.', toolSlugs: ['mux', 'cloudflare-stream', 'bunny-stream', 'api-video', 'imagekit', 'fastpix', 'wowza'] },
+  { slug: 'observability', name: 'Observability & APM', description: 'Gain deep visibility into distributed systems with traces, metrics, and logs.', toolSlugs: ['dynatrace', 'honeycomb', 'signoz', 'lightstep', 'elastic-apm', 'aspecto', 'helios-obs'] },
+  { slug: 'sms-api', name: 'SMS & Communications APIs', description: 'Send SMS, voice, and WhatsApp messages programmatically.', toolSlugs: ['bird-sms', 'vonage-sms', 'messagebird', 'plivo', 'sinch', 'bandwidth-sms', 'telnyx'] },
+  { slug: 'browser-testing', name: 'Browser & Visual Testing', description: 'Test across real browsers and catch visual regressions automatically.', toolSlugs: ['browserstack', 'saucelabs', 'lambdatest', 'percy', 'chromatic', 'testingbot', 'browsercat'] },
+  { slug: 'pdf-api', name: 'PDF Generation APIs', description: 'Generate, convert, and manipulate PDF documents from HTML or templates.', toolSlugs: ['puppeteer-pdf', 'playwright-pdf', 'gotenberg', 'weasyprint', 'pdfmonkey', 'docraptor', 'pdf-co'] },
+  { slug: 'screenshot-api', name: 'Screenshot APIs', description: 'Capture website screenshots and generate images from HTML via API.', toolSlugs: ['screenshotone', 'urlbox', 'htmlcsstoimage', 'microlink', 'screenshotapi', 'url2png', 'shotstack'] },
+  { slug: 'uptime', name: 'Uptime Monitoring', description: 'Monitor website and API availability with status pages and alerts.', toolSlugs: ['freshping', 'statuscake', 'pingdom', 'site24x7', 'pulsetic', 'hyperping', 'instatus'] },
+  { slug: 'iac', name: 'Infrastructure as Code', description: 'Provision and manage cloud infrastructure declaratively.', toolSlugs: ['terraform', 'pulumi', 'cloudformation', 'ansible', 'opentofu', 'crossplane', 'aws-cdk'] },
+  { slug: 'api-testing', name: 'API Testing & Clients', description: 'Test, debug, and document REST, GraphQL, and gRPC APIs.', toolSlugs: ['postman', 'insomnia', 'hoppscotch', 'bruno', 'httpie', 'swagger-ui', 'paw'] },
+  { slug: 'js-framework', name: 'JavaScript Frameworks', description: 'Full-stack and meta-frameworks for building modern web applications.', toolSlugs: ['nextjs', 'remix', 'nuxt', 'sveltekit', 'astro', 'solidjs', 'qwik'] },
+  { slug: 'component-library', name: 'UI Component Libraries', description: 'Pre-built, accessible React and Vue components for rapid UI development.', toolSlugs: ['shadcn', 'radix-ui', 'chakra-ui', 'mantine', 'ant-design', 'headlessui', 'daisyui'] },
+  { slug: 'identity-sso', name: 'Enterprise SSO & Identity', description: 'Enterprise-grade SSO, MFA, and identity management for organizations.', toolSlugs: ['okta', 'onelogin', 'jumpcloud', 'duo', 'ping-identity', 'microsoft-entra', 'rippling'] },
+  { slug: 'bi-analytics', name: 'BI & Data Analytics', description: 'Build dashboards and explore data with business intelligence tools.', toolSlugs: ['metabase', 'looker', 'tableau-bi', 'redash', 'superset', 'lightdash', 'mode-bi'] },
 ]
 
 export function getToolBySlug(slug: string): Tool | undefined {
