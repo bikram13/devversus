@@ -6,14 +6,14 @@ import Link from 'next/link'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://devvs.io'),
+  metadataBase: new URL('https://devversus.com'),
   title: {
-    default: 'DevVs.io — Compare Developer Tools & Find Alternatives',
-    template: '%s | DevVs.io',
+    default: 'DevVersus — Compare Developer Tools & Find Alternatives',
+    template: '%s | DevVersus',
   },
   description: 'Compare the best developer tools and SaaS products side by side. Find alternatives to Vercel, Stripe, Supabase, and 200+ more tools used by developers.',
   openGraph: {
-    siteName: 'DevVs.io',
+    siteName: 'DevVersus',
     type: 'website',
   },
   twitter: {
@@ -28,7 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <header className="border-b border-gray-800 sticky top-0 z-50 bg-gray-950/95 backdrop-blur">
           <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
             <Link href="/" className="text-white font-bold text-lg tracking-tight">
-              DevVs<span className="text-indigo-400">.io</span>
+              Dev<span className="text-indigo-400">Versus</span>
             </Link>
             <nav className="flex items-center gap-6 text-sm text-gray-400">
               <Link href="/category/hosting" className="hover:text-white transition">Hosting</Link>
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <footer className="border-t border-gray-800 mt-24 py-10 text-sm text-gray-500">
           <div className="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
             <div>
-              <p className="font-semibold text-gray-300 mb-1">DevVs.io</p>
+              <p className="font-semibold text-gray-300 mb-1">DevVersus</p>
               <p>Helping developers choose the right tools since 2025.</p>
             </div>
             <div className="flex gap-6">
