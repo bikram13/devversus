@@ -1,0 +1,708 @@
+export interface Tool {
+  slug: string
+  name: string
+  tagline: string
+  description: string
+  category: string
+  website: string
+  pricing: 'free' | 'freemium' | 'paid' | 'open-source'
+  startingPrice?: string
+  affiliateUrl?: string
+  affiliatePayout?: string
+  features: string[]
+  pros: string[]
+  cons: string[]
+  alternatives: string[] // slugs of competitor tools
+  logoUrl?: string
+}
+
+export interface Category {
+  slug: string
+  name: string
+  description: string
+  toolSlugs: string[]
+}
+
+export const TOOLS: Tool[] = [
+  // HOSTING / DEPLOYMENT
+  {
+    slug: 'vercel',
+    name: 'Vercel',
+    tagline: 'The platform for frontend developers',
+    description: 'Vercel is a cloud platform for static sites and serverless functions, with automatic CI/CD for frameworks like Next.js.',
+    category: 'hosting',
+    website: 'https://vercel.com',
+    pricing: 'freemium',
+    startingPrice: '$20/month',
+    affiliateUrl: 'https://vercel.com',
+    features: ['Zero-config deployments', 'Edge network (CDN)', 'Serverless functions', 'Preview URLs', 'Next.js optimized', 'Analytics'],
+    pros: ['Instant deploys', 'Best Next.js support', 'Generous free tier', 'Automatic SSL'],
+    cons: ['Expensive at scale', 'Vendor lock-in for Next.js features', 'Limited compute for heavy workloads'],
+    alternatives: ['netlify', 'railway', 'render', 'flyio', 'cloudflare-pages'],
+  },
+  {
+    slug: 'netlify',
+    name: 'Netlify',
+    tagline: 'Build, deploy, and scale web apps',
+    description: 'Netlify offers continuous deployment from Git with a global CDN, serverless functions, and built-in form handling.',
+    category: 'hosting',
+    website: 'https://netlify.com',
+    pricing: 'freemium',
+    startingPrice: '$19/month',
+    features: ['Git-based deployments', 'Netlify Functions', 'Edge Functions', 'Split testing', 'Form handling', 'Identity'],
+    pros: ['Framework-agnostic', 'Easy branch previews', 'Good free tier', 'Built-in form handling'],
+    cons: ['Build minutes limited on free tier', 'Functions cold start times', 'Less Next.js-specific optimization'],
+    alternatives: ['vercel', 'railway', 'render', 'cloudflare-pages'],
+  },
+  {
+    slug: 'railway',
+    name: 'Railway',
+    tagline: 'Deploy in seconds, scale forever',
+    description: 'Railway is a deployment platform where you can provision infrastructure with one click and deploy from GitHub.',
+    category: 'hosting',
+    website: 'https://railway.app',
+    pricing: 'freemium',
+    startingPrice: '$5/month',
+    features: ['One-click deploys', 'Built-in databases', 'Environment variables', 'Custom domains', 'Usage-based pricing'],
+    pros: ['Supports backend apps and databases', 'Simple pricing model', 'Full-stack in one place'],
+    cons: ['Less mature than Vercel/Netlify', 'Smaller ecosystem', 'Limited edge features'],
+    alternatives: ['vercel', 'render', 'heroku', 'flyio'],
+  },
+  {
+    slug: 'render',
+    name: 'Render',
+    tagline: 'Build, deploy, and scale your apps',
+    description: 'Render is a unified cloud to build and run all your apps and websites with free TLS certificates, global CDN, and auto deploys from Git.',
+    category: 'hosting',
+    website: 'https://render.com',
+    pricing: 'freemium',
+    startingPrice: '$7/month',
+    features: ['Auto-deploys from Git', 'Free TLS', 'PostgreSQL managed DB', 'Background workers', 'Cron jobs'],
+    pros: ['Simple pricing', 'Managed PostgreSQL included', 'No cold starts on paid tier'],
+    cons: ['Free tier sleeps after 15min', 'Limited to US and EU regions', 'Build times can be slow'],
+    alternatives: ['railway', 'heroku', 'flyio', 'vercel'],
+  },
+  {
+    slug: 'flyio',
+    name: 'Fly.io',
+    tagline: 'Deploy app servers close to your users',
+    description: "Fly.io transforms containers into micro-VMs that run on hardware in 35+ cities around the world, close to your users.",
+    category: 'hosting',
+    website: 'https://fly.io',
+    pricing: 'freemium',
+    startingPrice: '$1.94/month',
+    features: ['Global edge deployment', 'Docker-based', '35+ regions', 'Persistent volumes', 'Private networking'],
+    pros: ['True global deployment', 'Docker-native', 'Low latency globally', 'Competitive pricing'],
+    cons: ['Steeper learning curve', 'CLI-heavy workflow', 'Less beginner-friendly'],
+    alternatives: ['railway', 'render', 'heroku', 'vercel'],
+  },
+  {
+    slug: 'heroku',
+    name: 'Heroku',
+    tagline: 'Cloud application platform',
+    description: 'Heroku is a platform as a service (PaaS) that enables developers to build, run, and operate applications entirely in the cloud.',
+    category: 'hosting',
+    website: 'https://heroku.com',
+    pricing: 'paid',
+    startingPrice: '$5/month',
+    features: ['Git push deploy', 'Add-ons marketplace', 'Managed PostgreSQL', 'Review apps', 'CI/CD pipeline'],
+    pros: ['Large add-ons ecosystem', 'Mature platform', 'Good documentation'],
+    cons: ['Removed free tier in 2022', 'Expensive compared to alternatives', 'Older UX', 'Owned by Salesforce'],
+    alternatives: ['railway', 'render', 'flyio', 'vercel'],
+  },
+  {
+    slug: 'cloudflare-pages',
+    name: 'Cloudflare Pages',
+    tagline: 'Build fast sites on Cloudflare\'s global network',
+    description: 'Cloudflare Pages is a JAMstack platform for frontend developers to collaborate and deploy websites.',
+    category: 'hosting',
+    website: 'https://pages.cloudflare.com',
+    pricing: 'freemium',
+    startingPrice: '$20/month',
+    features: ['Global CDN', 'Workers integration', 'Unlimited bandwidth', 'Preview deployments', 'Web analytics'],
+    pros: ['Unlimited bandwidth on free tier', 'Workers for edge functions', 'Best CDN performance', 'Free tier is very generous'],
+    cons: ['No server-side rendering beyond Workers', 'Less Next.js-specific features', 'Build cache limitations'],
+    alternatives: ['vercel', 'netlify', 'github-pages'],
+  },
+
+  // PAYMENT GATEWAYS
+  {
+    slug: 'stripe',
+    name: 'Stripe',
+    tagline: 'Payments infrastructure for the internet',
+    description: 'Stripe is a suite of payment APIs that powers commerce for online businesses of all sizes.',
+    category: 'payments',
+    website: 'https://stripe.com',
+    pricing: 'paid',
+    startingPrice: '2.9% + 30¢ per transaction',
+    affiliateUrl: 'https://stripe.com/partners',
+    features: ['Card payments', 'Subscriptions', 'Invoicing', 'Connect (marketplaces)', 'Radar (fraud)', 'Terminal (in-person)', 'Stripe Checkout'],
+    pros: ['Best developer experience', 'Excellent documentation', 'Webhooks and APIs', 'Global coverage', 'No monthly fees'],
+    cons: ['Not available in all countries', 'Requires business entity in many regions', 'Chargeback fees'],
+    alternatives: ['paddle', 'lemon-squeezy', 'braintree', 'square'],
+  },
+  {
+    slug: 'paddle',
+    name: 'Paddle',
+    tagline: 'The complete payments, tax & subscription solution',
+    description: 'Paddle acts as the Merchant of Record, handling global payments, taxes, and compliance so you don\'t have to.',
+    category: 'payments',
+    website: 'https://paddle.com',
+    pricing: 'paid',
+    startingPrice: '5% + 50¢ per transaction',
+    features: ['Merchant of Record', 'Global tax handling', 'Subscription management', 'Revenue recovery', 'Analytics'],
+    pros: ['Handles all taxes globally', 'Works for individuals', 'No need for business entity', 'EU VAT handled'],
+    cons: ['Higher fees than Stripe', 'Less developer-friendly than Stripe', 'Fewer integrations'],
+    alternatives: ['stripe', 'lemon-squeezy', 'gumroad'],
+  },
+  {
+    slug: 'lemon-squeezy',
+    name: 'Lemon Squeezy',
+    tagline: 'Sell digital products and SaaS',
+    description: 'Lemon Squeezy is a Merchant of Record platform for selling digital products and SaaS subscriptions globally.',
+    category: 'payments',
+    website: 'https://lemonsqueezy.com',
+    pricing: 'paid',
+    startingPrice: '5% + 50¢ per transaction',
+    features: ['MoR model', 'Digital product delivery', 'License keys', 'Affiliate system', 'Checkout customization'],
+    pros: ['Simple setup', 'Affiliate program built-in', 'Good for indie developers', 'No monthly fees'],
+    cons: ['Higher fees', 'Requires entity in some regions', 'Limited customization vs Stripe'],
+    alternatives: ['paddle', 'stripe', 'gumroad'],
+  },
+
+  // DATABASES
+  {
+    slug: 'supabase',
+    name: 'Supabase',
+    tagline: 'The open source Firebase alternative',
+    description: 'Supabase is an open source Firebase alternative providing a Postgres database, Auth, realtime, storage, and edge functions.',
+    category: 'database',
+    website: 'https://supabase.com',
+    pricing: 'freemium',
+    startingPrice: '$25/month',
+    affiliateUrl: 'https://supabase.com/affiliate',
+    features: ['PostgreSQL', 'Authentication', 'Realtime', 'Storage', 'Edge Functions', 'Auto-generated APIs'],
+    pros: ['Full Postgres with SQL', 'Built-in auth and storage', 'Open source', 'Great free tier'],
+    cons: ['Free tier pauses after 1 week inactive', 'Self-hosting is complex', 'Edge functions limited'],
+    alternatives: ['firebase', 'neon', 'planetscale', 'turso'],
+  },
+  {
+    slug: 'neon',
+    name: 'Neon',
+    tagline: 'Serverless Postgres',
+    description: 'Neon is a serverless PostgreSQL database with branching, autoscaling, and a generous free tier.',
+    category: 'database',
+    website: 'https://neon.tech',
+    pricing: 'freemium',
+    startingPrice: '$19/month',
+    features: ['Serverless PostgreSQL', 'Database branching', 'Autoscaling', 'Connection pooling', 'Point-in-time restore'],
+    pros: ['Scale-to-zero (no idle cost)', 'Database branching for dev/test', 'Fast cold starts', 'Great DX'],
+    cons: ['No non-Postgres support', 'Relatively new', 'Connection limits on free tier'],
+    alternatives: ['supabase', 'planetscale', 'turso', 'railway'],
+  },
+  {
+    slug: 'planetscale',
+    name: 'PlanetScale',
+    tagline: 'The MySQL-compatible serverless database platform',
+    description: 'PlanetScale is a MySQL-compatible serverless database with branching workflows for schema changes.',
+    category: 'database',
+    website: 'https://planetscale.com',
+    pricing: 'paid',
+    startingPrice: '$39/month',
+    features: ['MySQL-compatible', 'Database branching', 'Non-blocking schema changes', 'Query insights', 'Replication'],
+    pros: ['Non-blocking schema changes', 'MySQL compatibility', 'Excellent performance'],
+    cons: ['Removed free tier in 2024', 'No foreign key constraints', 'MySQL only'],
+    alternatives: ['supabase', 'neon', 'turso'],
+  },
+  {
+    slug: 'turso',
+    name: 'Turso',
+    tagline: 'SQLite for production',
+    description: 'Turso is a distributed SQLite database built for the edge, powered by libSQL.',
+    category: 'database',
+    website: 'https://turso.tech',
+    pricing: 'freemium',
+    startingPrice: '$29/month',
+    features: ['Distributed SQLite', 'Edge-first', 'libSQL fork', 'Multi-tenancy', 'Embedded replicas'],
+    pros: ['Ultra-low latency at edge', 'SQLite simplicity', 'Generous free tier', 'Multi-DB per account'],
+    cons: ['No complex joins at scale', 'SQLite limitations', 'Newer ecosystem'],
+    alternatives: ['neon', 'supabase', 'd1'],
+  },
+
+  // AUTH
+  {
+    slug: 'clerk',
+    name: 'Clerk',
+    tagline: 'The most comprehensive user management platform',
+    description: 'Clerk is a complete authentication and user management solution with pre-built UI components.',
+    category: 'auth',
+    website: 'https://clerk.com',
+    pricing: 'freemium',
+    startingPrice: '$25/month',
+    affiliateUrl: 'https://clerk.com/affiliates',
+    features: ['Prebuilt UI components', 'Social logins', 'MFA', 'Organizations/teams', 'JWT templates', 'User management dashboard'],
+    pros: ['Fastest setup', 'Beautiful prebuilt components', 'Organizations support', 'Excellent Next.js integration'],
+    cons: ['Pricey at scale (per MAU)', 'Vendor lock-in risk', 'Less control vs Auth.js'],
+    alternatives: ['auth0', 'supabase', 'nextauth', 'workos'],
+  },
+  {
+    slug: 'auth0',
+    name: 'Auth0',
+    tagline: 'Secure access for everyone',
+    description: 'Auth0 is an identity platform for web, mobile, and IoT with support for social logins, SSO, and more.',
+    category: 'auth',
+    website: 'https://auth0.com',
+    pricing: 'freemium',
+    startingPrice: '$23/month',
+    features: ['Universal Login', 'Social connections', 'MFA', 'SSO', 'Machine-to-machine auth', 'Rules/Actions'],
+    pros: ['Enterprise-grade', 'Highly customizable', 'Excellent docs', 'Massive integrations library'],
+    cons: ['Complex for simple use cases', 'Expensive at scale', 'Config-heavy'],
+    alternatives: ['clerk', 'nextauth', 'workos', 'supabase'],
+  },
+  {
+    slug: 'nextauth',
+    name: 'NextAuth.js (Auth.js)',
+    tagline: 'Authentication for the Web',
+    description: 'NextAuth.js is a complete authentication library for Next.js applications with adapters for 60+ databases and providers.',
+    category: 'auth',
+    website: 'https://authjs.dev',
+    pricing: 'free',
+    features: ['40+ OAuth providers', 'Database adapters', 'JWT sessions', 'Email magic links', 'Credentials auth'],
+    pros: ['Free and open source', 'No vendor lock-in', 'Highly flexible', 'Full control'],
+    cons: ['More setup required', 'No prebuilt UI', 'Docs can be confusing'],
+    alternatives: ['clerk', 'auth0', 'supabase'],
+  },
+
+  // EMAIL
+  {
+    slug: 'resend',
+    name: 'Resend',
+    tagline: 'Email for developers',
+    description: 'Resend is an email API for developers with React Email for building transactional emails.',
+    category: 'email',
+    website: 'https://resend.com',
+    pricing: 'freemium',
+    startingPrice: '$20/month',
+    features: ['React Email templates', 'Simple REST API', 'Domains and subaccounts', 'Webhooks', 'Analytics'],
+    pros: ['Best developer experience', 'React Email integration', 'Simple pricing', 'Great free tier'],
+    cons: ['Newer than SendGrid', 'Smaller deliverability track record', 'Limited marketing features'],
+    alternatives: ['sendgrid', 'postmark', 'mailgun', 'aws-ses'],
+  },
+  {
+    slug: 'sendgrid',
+    name: 'SendGrid',
+    tagline: 'Email delivery for developers',
+    description: 'SendGrid (Twilio) is a cloud-based SMTP provider for transactional and marketing email.',
+    category: 'email',
+    website: 'https://sendgrid.com',
+    pricing: 'freemium',
+    startingPrice: '$19.95/month',
+    features: ['Transactional API', 'Marketing campaigns', 'Email templates', 'Deliverability tools', 'Analytics'],
+    pros: ['Huge volume capacity', 'Battle-tested deliverability', 'Marketing + transactional in one'],
+    cons: ['Complex UI', 'Support can be slow', 'Pricier than alternatives'],
+    alternatives: ['resend', 'postmark', 'mailgun'],
+  },
+  {
+    slug: 'postmark',
+    name: 'Postmark',
+    tagline: 'Email delivery for web apps',
+    description: 'Postmark specializes in fast, reliable transactional email delivery with industry-leading delivery speeds.',
+    category: 'email',
+    website: 'https://postmarkapp.com',
+    pricing: 'paid',
+    startingPrice: '$15/month',
+    features: ['Transactional email', '45-day email history', 'DKIM/SPF auto-setup', 'Message streams', 'Templates'],
+    pros: ['Best deliverability', 'Fast delivery (< 10s)', 'Excellent support', 'Clean interface'],
+    cons: ['No free tier', 'Transactional-only (no marketing)', 'Pricier per-email at low volumes'],
+    alternatives: ['resend', 'sendgrid', 'mailgun'],
+  },
+
+  // MONITORING
+  {
+    slug: 'sentry',
+    name: 'Sentry',
+    tagline: 'Application monitoring and error tracking',
+    description: 'Sentry provides real-time error tracking and performance monitoring for web and mobile applications.',
+    category: 'monitoring',
+    website: 'https://sentry.io',
+    pricing: 'freemium',
+    startingPrice: '$26/month',
+    features: ['Error tracking', 'Performance monitoring', 'Session replay', 'Profiling', 'Crons', 'Alerts'],
+    pros: ['Best error tracking DX', 'Great free tier', 'SDK for every language', 'Session replay'],
+    cons: ['Can get expensive at scale', 'Complex pricing', 'Noisy alerts if not tuned'],
+    alternatives: ['datadog', 'logrocket', 'bugsnag', 'rollbar'],
+  },
+  {
+    slug: 'datadog',
+    name: 'Datadog',
+    tagline: 'Cloud monitoring as a service',
+    description: 'Datadog is an observability platform with infrastructure monitoring, APM, logs, and security.',
+    category: 'monitoring',
+    website: 'https://datadoghq.com',
+    pricing: 'paid',
+    startingPrice: '$15/host/month',
+    features: ['Infrastructure monitoring', 'APM', 'Log management', 'Synthetic monitoring', 'Security', 'Dashboards'],
+    pros: ['All-in-one observability', 'Excellent dashboards', 'Deep integrations (700+)', 'Enterprise-grade'],
+    cons: ['Very expensive', 'Complex pricing', 'Overkill for small teams'],
+    alternatives: ['sentry', 'grafana', 'newrelic', 'logtail'],
+  },
+  {
+    slug: 'posthog',
+    name: 'PostHog',
+    tagline: 'The open source product analytics platform',
+    description: 'PostHog is an open-source product analytics suite with funnels, feature flags, A/B testing, and session recording.',
+    category: 'analytics',
+    website: 'https://posthog.com',
+    pricing: 'freemium',
+    startingPrice: '$0 (usage-based after 1M events)',
+    affiliateUrl: 'https://posthog.com/partners',
+    features: ['Product analytics', 'Session recording', 'Feature flags', 'A/B testing', 'Surveys', 'Data warehouse'],
+    pros: ['Open source', 'All-in-one product suite', 'Generous free tier', 'Self-hostable'],
+    cons: ['Can be complex to set up', 'Self-hosting requires infra', 'Large bundle size'],
+    alternatives: ['mixpanel', 'amplitude', 'plausible', 'logrocket'],
+  },
+  {
+    slug: 'plausible',
+    name: 'Plausible',
+    tagline: 'Privacy-friendly Google Analytics alternative',
+    description: 'Plausible is a lightweight, open-source, privacy-friendly Google Analytics alternative.',
+    category: 'analytics',
+    website: 'https://plausible.io',
+    pricing: 'paid',
+    startingPrice: '$9/month',
+    features: ['Cookie-free analytics', 'GDPR compliant', 'Lightweight script (1KB)', 'Goal tracking', 'Custom events'],
+    pros: ['No cookie banner needed', 'Simple and clean UI', 'Open source', 'Very lightweight'],
+    cons: ['No session recording', 'Limited funnel analysis', 'No free tier'],
+    alternatives: ['posthog', 'fathom', 'umami', 'google-analytics'],
+  },
+
+  // CI/CD
+  {
+    slug: 'github-actions',
+    name: 'GitHub Actions',
+    tagline: 'Automate your GitHub workflow',
+    description: 'GitHub Actions is a CI/CD and automation platform built into GitHub with thousands of community actions.',
+    category: 'cicd',
+    website: 'https://github.com/features/actions',
+    pricing: 'freemium',
+    startingPrice: '$0 (2,000 min/month free)',
+    features: ['YAML workflows', 'Matrix builds', 'Reusable workflows', 'Marketplace actions', 'Self-hosted runners', 'Secrets management'],
+    pros: ['Built into GitHub', 'Huge marketplace', 'Free for public repos', 'No extra accounts'],
+    cons: ['Minutes-based pricing', 'Slow cold starts', 'Complex YAML for advanced workflows'],
+    alternatives: ['gitlab-ci', 'circleci', 'jenkins', 'bitbucket-pipelines'],
+  },
+  {
+    slug: 'circleci',
+    name: 'CircleCI',
+    tagline: 'The fastest CI/CD for developers',
+    description: 'CircleCI is a continuous integration and delivery platform that automates development workflows.',
+    category: 'cicd',
+    website: 'https://circleci.com',
+    pricing: 'freemium',
+    startingPrice: '$15/month',
+    features: ['Docker-first', 'Orbs (reusable packages)', 'Parallelism', 'Test splitting', 'SSH debugging', 'Self-hosted runners'],
+    pros: ['Fast builds', 'Great parallelism', 'Docker-native', 'Good debugging tools'],
+    cons: ['Config can be verbose', 'Expensive compared to GitHub Actions', 'Less native GitHub integration'],
+    alternatives: ['github-actions', 'gitlab-ci', 'buildkite'],
+  },
+
+  // AI APIs
+  {
+    slug: 'openai',
+    name: 'OpenAI API',
+    tagline: 'Build AI-powered applications',
+    description: 'OpenAI provides API access to GPT-4, GPT-3.5, DALL-E, Whisper, and other models for developers.',
+    category: 'ai-api',
+    website: 'https://platform.openai.com',
+    pricing: 'paid',
+    startingPrice: '$0.15/1M tokens (GPT-4o mini)',
+    features: ['GPT-4o', 'Assistants API', 'Fine-tuning', 'DALL-E 3', 'Whisper', 'Embeddings', 'Function calling'],
+    pros: ['Most capable models', 'Largest ecosystem', 'Assistants API for stateful agents', 'Wide integrations'],
+    cons: ['Expensive for high volume', 'Rate limits', 'OpenAI reliability incidents', 'Privacy concerns'],
+    alternatives: ['anthropic', 'google-gemini', 'groq', 'together-ai'],
+  },
+  {
+    slug: 'anthropic',
+    name: 'Anthropic Claude API',
+    tagline: 'AI safety company and Claude model provider',
+    description: 'Anthropic provides API access to Claude models known for safety, coding ability, and long context windows.',
+    category: 'ai-api',
+    website: 'https://anthropic.com',
+    pricing: 'paid',
+    startingPrice: '$0.25/1M tokens (Claude Haiku)',
+    features: ['200K context window', 'Computer use', 'Tool use', 'Prompt caching', 'Vision', 'Citations'],
+    pros: ['Exceptional coding ability', '200K context window', 'Prompt caching reduces costs', 'Safety-focused'],
+    cons: ['Smaller ecosystem than OpenAI', 'No image generation', 'Rate limits on new accounts'],
+    alternatives: ['openai', 'google-gemini', 'groq'],
+  },
+  {
+    slug: 'groq',
+    name: 'Groq',
+    tagline: 'The fastest AI inference',
+    description: 'Groq provides ultra-fast LLM inference using LPU hardware, with APIs for Llama, Mistral, and other open models.',
+    category: 'ai-api',
+    website: 'https://groq.com',
+    pricing: 'freemium',
+    startingPrice: '$0.05/1M tokens',
+    features: ['Ultra-fast inference (500+ tokens/s)', 'Llama 3', 'Mistral', 'Whisper', 'Function calling', 'OpenAI-compatible API'],
+    pros: ['Fastest inference available', 'Very cheap', 'OpenAI-compatible', 'Great free tier'],
+    cons: ['Limited model selection', 'No proprietary models', 'Rate limits on free tier'],
+    alternatives: ['openai', 'together-ai', 'anthropic'],
+  },
+
+  // CMS
+  {
+    slug: 'sanity',
+    name: 'Sanity',
+    tagline: 'The structured content platform',
+    description: 'Sanity is a headless CMS with real-time collaboration, a customizable studio, and a GROQ query language.',
+    category: 'cms',
+    website: 'https://sanity.io',
+    pricing: 'freemium',
+    startingPrice: '$15/month',
+    affiliateUrl: 'https://sanity.io/partner-program',
+    features: ['Real-time collaboration', 'Portable Text', 'GROQ queries', 'Studio customization', 'Content Lake', 'Image CDN'],
+    pros: ['Flexible schema', 'Real-time editing', 'Powerful GROQ', 'Great free tier', 'TypeScript-first'],
+    cons: ['GROQ learning curve', 'Costly for large teams', 'Complex for simple use cases'],
+    alternatives: ['contentful', 'strapi', 'payload', 'directus'],
+  },
+  {
+    slug: 'contentful',
+    name: 'Contentful',
+    tagline: 'The content platform for digital-first businesses',
+    description: 'Contentful is a headless CMS with a flexible content model, rich API, and global CDN.',
+    category: 'cms',
+    website: 'https://contentful.com',
+    pricing: 'freemium',
+    startingPrice: '$300/month',
+    features: ['Content modeling', 'Rich Text', 'Webhooks', 'Localization', 'Roles & permissions', 'Compose'],
+    pros: ['Enterprise-proven', 'Excellent localization', 'Rich ecosystem', 'GraphQL API'],
+    cons: ['Very expensive paid tier', 'Free tier is very limited', 'Over-engineered for small projects'],
+    alternatives: ['sanity', 'strapi', 'prismic', 'storyblok'],
+  },
+  {
+    slug: 'strapi',
+    name: 'Strapi',
+    tagline: 'The leading open-source headless CMS',
+    description: 'Strapi is an open-source headless CMS that is fully customizable and developer-first.',
+    category: 'cms',
+    website: 'https://strapi.io',
+    pricing: 'freemium',
+    startingPrice: '$29/month (cloud)',
+    features: ['REST and GraphQL APIs', 'Custom content types', 'Media library', 'Role management', 'Plugins', 'Self-hostable'],
+    pros: ['Open source', 'Self-hostable (free)', 'Highly customizable', 'Good plugin ecosystem'],
+    cons: ['Heavy resource usage', 'Plugin quality varies', 'Strapi Cloud pricing', 'v4 migration was painful'],
+    alternatives: ['sanity', 'payload', 'directus', 'contentful'],
+  },
+
+  // SEARCH
+  {
+    slug: 'algolia',
+    name: 'Algolia',
+    tagline: 'Search and discovery APIs',
+    description: 'Algolia provides hosted search APIs with typo-tolerance, faceting, and sub-50ms results.',
+    category: 'search',
+    website: 'https://algolia.com',
+    pricing: 'freemium',
+    startingPrice: '$50/month',
+    features: ['Instant search', 'Typo tolerance', 'Facets and filters', 'Analytics', 'AI search', 'NeuralSearch'],
+    pros: ['Sub-50ms responses', 'Best developer UX', 'Powerful relevance tuning', 'Generous free tier'],
+    cons: ['Expensive at scale', 'Per-record pricing adds up', 'Vendor lock-in'],
+    alternatives: ['typesense', 'meilisearch', 'elasticsearch'],
+  },
+  {
+    slug: 'typesense',
+    name: 'Typesense',
+    tagline: 'Open source, typo-tolerant search engine',
+    description: 'Typesense is a fast, typo-tolerant, open-source search engine that is easy to set up.',
+    category: 'search',
+    website: 'https://typesense.org',
+    pricing: 'freemium',
+    startingPrice: '$0 (self-hosted free)',
+    features: ['Instant search', 'Typo tolerance', 'Faceting', 'Semantic search', 'Vector search', 'Cloud or self-hosted'],
+    pros: ['Open source (free self-hosted)', 'Very fast', 'Simple API', 'Cheaper than Algolia'],
+    cons: ['Smaller ecosystem than Algolia', 'Less enterprise features', 'Self-hosting requires DevOps'],
+    alternatives: ['algolia', 'meilisearch', 'elasticsearch'],
+  },
+
+  // ORM
+  {
+    slug: 'prisma',
+    name: 'Prisma',
+    tagline: 'Next-generation Node.js ORM',
+    description: 'Prisma is a type-safe ORM for Node.js and TypeScript with an intuitive data model and auto-generated queries.',
+    category: 'orm',
+    website: 'https://prisma.io',
+    pricing: 'free',
+    features: ['Type-safe queries', 'Schema migrations', 'Prisma Studio', 'Multiple DB support', 'Edge support (Prisma Accelerate)'],
+    pros: ['Best TypeScript integration', 'Auto-complete in IDE', 'Prisma Studio GUI', 'Excellent docs'],
+    cons: ['Can be slow for complex queries', 'Migration system can be fragile', 'Heavy client bundle'],
+    alternatives: ['drizzle', 'typeorm', 'kysely', 'sequelize'],
+  },
+  {
+    slug: 'drizzle',
+    name: 'Drizzle ORM',
+    tagline: 'TypeScript ORM that runs everywhere',
+    description: 'Drizzle is a lightweight TypeScript ORM with a SQL-like API that compiles to raw SQL for maximum performance.',
+    category: 'orm',
+    website: 'https://orm.drizzle.team',
+    pricing: 'free',
+    features: ['SQL-like API', 'Zero dependencies', 'Edge-compatible', 'Migrations', 'Multiple DB drivers', 'Schema introspection'],
+    pros: ['Very fast', 'Edge-compatible', 'Thin abstraction (close to SQL)', 'Great TypeScript types', 'No codegen'],
+    cons: ['Less magic than Prisma', 'Smaller ecosystem', 'Docs less polished'],
+    alternatives: ['prisma', 'kysely', 'typeorm'],
+  },
+
+  // STORAGE
+  {
+    slug: 'cloudflare-r2',
+    name: 'Cloudflare R2',
+    tagline: 'S3-compatible object storage without egress fees',
+    description: 'Cloudflare R2 is an S3-compatible object storage with zero egress fees and a generous free tier.',
+    category: 'storage',
+    website: 'https://cloudflare.com/products/r2',
+    pricing: 'freemium',
+    startingPrice: '$0.015/GB/month',
+    features: ['S3-compatible API', 'Zero egress fees', 'Global replication', 'Public buckets', 'Workers integration'],
+    pros: ['No egress fees (huge vs AWS S3)', 'S3-compatible', 'Global CDN included', 'Very cheap'],
+    cons: ['No lifecycle policies (yet)', 'Cloudflare account required', 'Less mature than S3'],
+    alternatives: ['aws-s3', 'backblaze-b2', 'supabase-storage'],
+  },
+  {
+    slug: 'aws-s3',
+    name: 'AWS S3',
+    tagline: 'Scalable object storage',
+    description: 'Amazon S3 is the industry-standard object storage service with 99.999999999% durability.',
+    category: 'storage',
+    website: 'https://aws.amazon.com/s3',
+    pricing: 'paid',
+    startingPrice: '$0.023/GB/month + egress',
+    features: ['99.999999999% durability', 'Versioning', 'Lifecycle policies', 'Event notifications', 'Glacier archival', 'Access controls'],
+    pros: ['Battle-tested reliability', 'Massive ecosystem', 'Extensive tooling', 'Fine-grained access control'],
+    cons: ['Egress fees add up fast', 'Complex pricing', 'AWS account complexity'],
+    alternatives: ['cloudflare-r2', 'backblaze-b2', 'supabase-storage'],
+  },
+
+  // TESTING
+  {
+    slug: 'playwright',
+    name: 'Playwright',
+    tagline: 'Fast and reliable end-to-end testing',
+    description: 'Playwright enables reliable end-to-end testing for modern web apps across Chromium, Firefox, and WebKit.',
+    category: 'testing',
+    website: 'https://playwright.dev',
+    pricing: 'free',
+    features: ['Cross-browser testing', 'Auto-wait', 'Network interception', 'Trace viewer', 'Component testing', 'API testing'],
+    pros: ['Auto-waiting (no flaky tests)', 'Multi-browser support', 'Trace viewer debugging', 'Fast parallel execution'],
+    cons: ['Heavier than Cypress for simple tests', 'Learning curve', 'Slower test authoring'],
+    alternatives: ['cypress', 'selenium', 'puppeteer'],
+  },
+  {
+    slug: 'cypress',
+    name: 'Cypress',
+    tagline: 'Fast, easy and reliable testing for anything that runs in a browser',
+    description: 'Cypress is a JavaScript-based end-to-end testing framework with real-time reloads and time-travel debugging.',
+    category: 'testing',
+    website: 'https://cypress.io',
+    pricing: 'freemium',
+    startingPrice: '$67/month',
+    features: ['Real-time reloads', 'Time-travel debugging', 'Network stubbing', 'Component testing', 'Dashboard recording'],
+    pros: ['Great developer experience', 'Time-travel UI', 'Easy setup', 'Good component testing'],
+    cons: ['Chromium-only for long time', 'Slower than Playwright', 'Dashboard is paid', 'Single origin limitation'],
+    alternatives: ['playwright', 'selenium', 'vitest'],
+  },
+
+  // FEATURE FLAGS
+  {
+    slug: 'growthbook',
+    name: 'GrowthBook',
+    tagline: 'Open source feature flags and A/B testing',
+    description: 'GrowthBook is an open-source platform for feature flags, A/B testing, and experimentation.',
+    category: 'feature-flags',
+    website: 'https://growthbook.io',
+    pricing: 'freemium',
+    startingPrice: '$0 (self-hosted free)',
+    features: ['Feature flags', 'A/B testing', 'Statistical analysis', 'SDKs for all languages', 'Self-hostable', 'Visual editor'],
+    pros: ['Open source', 'Strong statistics engine', 'Self-hostable for free', 'Data warehouse integration'],
+    cons: ['Less polish than LaunchDarkly', 'Smaller ecosystem', 'Self-hosting requires maintenance'],
+    alternatives: ['launchdarkly', 'posthog', 'unleash'],
+  },
+  {
+    slug: 'launchdarkly',
+    name: 'LaunchDarkly',
+    tagline: 'Feature management platform',
+    description: 'LaunchDarkly is an enterprise feature management platform for managing feature flags at scale.',
+    category: 'feature-flags',
+    website: 'https://launchdarkly.com',
+    pricing: 'paid',
+    startingPrice: '$8.33/seat/month',
+    features: ['Feature flags', 'Experimentation', 'Targeting rules', 'Progressive rollouts', 'Audit logs', 'Approvals'],
+    pros: ['Enterprise features', 'Excellent SDKs', 'Audit trail', 'Fine-grained targeting'],
+    cons: ['Very expensive', 'Overkill for small teams', 'Per-seat pricing adds up'],
+    alternatives: ['growthbook', 'posthog', 'flagsmith'],
+  },
+]
+
+export const CATEGORIES: Category[] = [
+  { slug: 'hosting', name: 'Hosting & Deployment', description: 'Deploy and host your web applications and APIs in the cloud.', toolSlugs: ['vercel', 'netlify', 'railway', 'render', 'flyio', 'heroku', 'cloudflare-pages'] },
+  { slug: 'payments', name: 'Payment Gateways', description: 'Accept payments, manage subscriptions, and handle billing for your SaaS.', toolSlugs: ['stripe', 'paddle', 'lemon-squeezy'] },
+  { slug: 'database', name: 'Databases', description: 'Managed databases and serverless data stores for modern applications.', toolSlugs: ['supabase', 'neon', 'planetscale', 'turso'] },
+  { slug: 'auth', name: 'Authentication', description: 'Add user authentication, social logins, and identity management.', toolSlugs: ['clerk', 'auth0', 'nextauth'] },
+  { slug: 'email', name: 'Email APIs', description: 'Send transactional emails reliably with developer-friendly APIs.', toolSlugs: ['resend', 'sendgrid', 'postmark'] },
+  { slug: 'monitoring', name: 'Monitoring & Error Tracking', description: 'Track errors, monitor performance, and get alerted when things break.', toolSlugs: ['sentry', 'datadog'] },
+  { slug: 'analytics', name: 'Product Analytics', description: 'Understand how users interact with your product.', toolSlugs: ['posthog', 'plausible'] },
+  { slug: 'cicd', name: 'CI/CD', description: 'Automate testing, building, and deployment of your applications.', toolSlugs: ['github-actions', 'circleci'] },
+  { slug: 'ai-api', name: 'AI APIs', description: 'Add AI capabilities to your applications with leading model providers.', toolSlugs: ['openai', 'anthropic', 'groq'] },
+  { slug: 'cms', name: 'Headless CMS', description: 'Manage structured content for your web and mobile applications.', toolSlugs: ['sanity', 'contentful', 'strapi'] },
+  { slug: 'search', name: 'Search', description: 'Add fast, typo-tolerant search to your application.', toolSlugs: ['algolia', 'typesense'] },
+  { slug: 'orm', name: 'ORM & Query Builders', description: 'Type-safe database access for TypeScript and Node.js applications.', toolSlugs: ['prisma', 'drizzle'] },
+  { slug: 'storage', name: 'Object Storage', description: 'Store files, images, and large assets in the cloud.', toolSlugs: ['cloudflare-r2', 'aws-s3'] },
+  { slug: 'testing', name: 'Testing', description: 'Automated testing frameworks for reliable web applications.', toolSlugs: ['playwright', 'cypress'] },
+  { slug: 'feature-flags', name: 'Feature Flags', description: 'Roll out features safely with flags, targeting, and A/B testing.', toolSlugs: ['growthbook', 'launchdarkly'] },
+]
+
+export function getToolBySlug(slug: string): Tool | undefined {
+  return TOOLS.find(t => t.slug === slug)
+}
+
+export function getToolsByCategory(categorySlug: string): Tool[] {
+  const cat = CATEGORIES.find(c => c.slug === categorySlug)
+  if (!cat) return []
+  return cat.toolSlugs.map(s => getToolBySlug(s)).filter(Boolean) as Tool[]
+}
+
+export function getCategoryBySlug(slug: string): Category | undefined {
+  return CATEGORIES.find(c => c.slug === slug)
+}
+
+export function getCategoryForTool(toolSlug: string): Category | undefined {
+  return CATEGORIES.find(c => c.toolSlugs.includes(toolSlug))
+}
+
+/** Generate all "X vs Y" comparison pairs within the same category */
+export function getAllComparisons(): Array<{ tool1: Tool; tool2: Tool; slug: string }> {
+  const pairs: Array<{ tool1: Tool; tool2: Tool; slug: string }> = []
+  for (const cat of CATEGORIES) {
+    const tools = getToolsByCategory(cat.slug)
+    for (let i = 0; i < tools.length; i++) {
+      for (let j = i + 1; j < tools.length; j++) {
+        pairs.push({
+          tool1: tools[i],
+          tool2: tools[j],
+          slug: `${tools[i].slug}-vs-${tools[j].slug}`,
+        })
+      }
+    }
+  }
+  return pairs
+}
+
+/** Generate all "alternatives to X" pages */
+export function getAllAlternativePages(): Array<{ tool: Tool; alternatives: Tool[] }> {
+  return TOOLS.map(tool => ({
+    tool,
+    alternatives: tool.alternatives
+      .map(s => getToolBySlug(s))
+      .filter(Boolean) as Tool[],
+  })).filter(p => p.alternatives.length > 0)
+}
