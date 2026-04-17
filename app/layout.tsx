@@ -17,10 +17,35 @@ export const metadata: Metadata = {
   twitter:   { card: 'summary_large_image' },
 }
 
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      name: 'DevVersus',
+      url: 'https://devversus.com',
+      description: 'Independent comparisons of developer tools and SaaS products. No vendor bias.',
+      foundingDate: '2025',
+    },
+    {
+      '@type': 'WebSite',
+      name: 'DevVersus',
+      url: 'https://devversus.com',
+      description: 'Compare developer tools side by side. Pricing, features, pros & cons.',
+      potentialAction: {
+        '@type': 'SearchAction',
+        target: 'https://devversus.com/compare/{search_term_string}',
+        'query-input': 'required name=search_term_string',
+      },
+    },
+  ],
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={inter.variable}>
       <body>
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgSchema) }} />
         {/* Ambient background blobs */}
         <div aria-hidden="true">
           <div className="ambient-blob ambient-blob-1" />

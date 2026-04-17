@@ -46,6 +46,15 @@ export default async function CategoryPage({ params }: Props) {
     c => c.tool1.category === slug || c.tool2.category === slug
   )
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://devversus.com' },
+      { '@type': 'ListItem', position: 2, name: category.name, item: `https://devversus.com/category/${slug}` },
+    ],
+  }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
@@ -64,6 +73,7 @@ export default async function CategoryPage({ params }: Props) {
 
   return (
     <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <div className="max-w-5xl mx-auto px-5 py-12">
 

@@ -47,7 +47,7 @@ export default async function AlternativesPage({ params }: Props) {
   const category = getCategoryForTool(slug)
   const year = new Date().getFullYear()
 
-  const jsonLd = {
+  const itemListSchema = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: `Best Alternatives to ${tool.name} (${year})`,
@@ -55,17 +55,65 @@ export default async function AlternativesPage({ params }: Props) {
     url: `https://devversus.com/alternatives/${slug}`,
     numberOfItems: alternatives.length,
     itemListElement: alternatives.map((alt, i) => ({
-      '@type': 'ListItem',
+      '@type': 'SoftwareApplication',
       position: i + 1,
       name: alt!.name,
       url: alt!.website,
       description: alt!.description,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Web',
     })),
+  }
+
+  const freeAlt = alternatives.find(a => a!.pricing === 'free' || a!.pricing === 'freemium' || a!.pricing === 'open-source')
+  const topAlt = alternatives[0]
+
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `What is the best alternative to ${tool.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: topAlt ? `${topAlt.name} is the top-rated alternative to ${tool.name}. It offers ${topAlt.pros.slice(0, 2).join(' and ')}, and is ${topAlt.pricing}${topAlt.startingPrice ? ` starting at ${topAlt.startingPrice}/month` : ''}.` : `See our full comparison of ${alternatives.length} alternatives above.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `Is there a free alternative to ${tool.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: freeAlt ? `Yes — ${freeAlt.name} is a ${freeAlt.pricing} alternative to ${tool.name}. ${freeAlt.pros[0] ?? ''}` : `Most alternatives to ${tool.name} are paid or freemium. Check our full list above for current pricing.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `Why do developers switch from ${tool.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: tool.cons.length > 0 ? `Common reasons to switch from ${tool.name}: ${tool.cons.join('; ')}.` : `Developers look for ${tool.name} alternatives when their needs grow beyond what it offers. See our comparison for details.`,
+        },
+      },
+    ],
+  }
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://devversus.com' },
+      ...(category ? [{ '@type': 'ListItem', position: 2, name: category.name, item: `https://devversus.com/category/${category.slug}` }] : []),
+      { '@type': 'ListItem', position: category ? 3 : 2, name: `Alternatives to ${tool.name}`, item: `https://devversus.com/alternatives/${slug}` },
+    ],
   }
 
   return (
     <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemListSchema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     <div className="max-w-4xl mx-auto px-5 py-12">
 
       {/* Breadcrumb */}

@@ -52,25 +52,80 @@ export default async function ComparePage({ params }: Props) {
   const year = new Date().getFullYear()
   const allFeatures = Array.from(new Set([...tool1.features, ...tool2.features]))
 
-  const jsonLd = {
+  // Helper: pricing string for schema
+  const priceStr = (tool: typeof tool1) =>
+    tool.startingPrice ? tool.startingPrice.replace(/[^0-9.]/g, '') || '0' : '0'
+
+  // SoftwareApplication schema for each tool
+  const softwareSchema = {
     '@context': 'https://schema.org',
-    '@type': 'ItemList',
-    name: `${tool1.name} vs ${tool2.name} — Feature & Pricing Comparison`,
-    description: `Compare ${tool1.name} and ${tool2.name} side by side. See pricing, features, pros & cons to decide which is right for your project.`,
-    url: `https://devversus.com/compare/${slug}`,
-    numberOfItems: 2,
-    itemListElement: [tool1, tool2].map((tool, i) => ({
-      '@type': 'ListItem',
-      position: i + 1,
+    '@graph': [tool1, tool2].map(tool => ({
+      '@type': 'SoftwareApplication',
       name: tool.name,
-      url: tool.website,
       description: tool.description,
+      url: tool.website,
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Web',
+      offers: {
+        '@type': 'Offer',
+        price: priceStr(tool),
+        priceCurrency: 'USD',
+        availability: 'https://schema.org/OnlineOnly',
+      },
     })),
   }
 
+  // FAQPage schema — answers generated from existing Tool data
+  const faqSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `What is the difference between ${tool1.name} and ${tool2.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `${tool1.name} is known for ${tool1.pros.slice(0, 2).join(' and ')}. ${tool2.name} stands out for ${tool2.pros.slice(0, 2).join(' and ')}. The main trade-off: ${tool1.name} ${tool1.cons[0] ?? 'has fewer free tier options'}, while ${tool2.name} ${tool2.cons[0] ?? 'has a steeper learning curve'}.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `How much does ${tool1.name} cost compared to ${tool2.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `${tool1.name} is ${tool1.pricing}${tool1.startingPrice ? `, starting at ${tool1.startingPrice}/month` : ''}. ${tool2.name} is ${tool2.pricing}${tool2.startingPrice ? `, starting at ${tool2.startingPrice}/month` : ''}.`,
+        },
+      },
+      {
+        '@type': 'Question',
+        name: `Should I use ${tool1.name} or ${tool2.name}?`,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: `Choose ${tool1.name} if ${tool1.pros[0]?.toLowerCase() ?? 'it fits your workflow'}. Choose ${tool2.name} if ${tool2.pros[0]?.toLowerCase() ?? 'it better suits your stack'}. Both are strong choices — the best pick depends on your team size, budget, and specific use case.`,
+        },
+      },
+    ],
+  }
+
+  // BreadcrumbList schema
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://devversus.com' },
+      ...(category ? [{ '@type': 'ListItem', position: 2, name: category.name, item: `https://devversus.com/category/${category.slug}` }] : []),
+      { '@type': 'ListItem', position: category ? 3 : 2, name: `${tool1.name} vs ${tool2.name}`, item: `https://devversus.com/compare/${slug}` },
+    ],
+  }
+
+  // TL;DR verdict text (used in both the UI and speakable schema)
+  const verdict = `${tool1.name} is better for teams that need ${tool1.pros[0]?.toLowerCase() ?? 'advanced features'}. ${tool2.name} is the stronger choice if ${tool2.pros[0]?.toLowerCase() ?? 'simplicity matters'}. ${tool1.name} is ${tool1.pricing}${tool1.startingPrice ? ` (from ${tool1.startingPrice})` : ''} and ${tool2.name} is ${tool2.pricing}${tool2.startingPrice ? ` (from ${tool2.startingPrice})` : ''}.`
+
   return (
     <>
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
     <div className="max-w-5xl mx-auto px-5 py-12">
 
       {/* Breadcrumb */}
@@ -94,9 +149,12 @@ export default async function ComparePage({ params }: Props) {
           {tool1.name} <span style={{ color: 'var(--foreground-muted)' }}>vs</span> {tool2.name}
           <span className="text-2xl font-bold ml-3" style={{ color: 'var(--foreground-muted)' }}>({year})</span>
         </h1>
-        <p className="text-base max-w-2xl" style={{ color: 'var(--foreground-muted)', lineHeight: 1.7 }}>
-          A detailed comparison of {tool1.name} and {tool2.name} — pricing, features,
-          pros & cons, and which one to pick for your use case.
+        {/* TL;DR verdict — optimised for AI citation and featured snippets */}
+        <p className="text-base max-w-2xl mb-3" style={{ color: 'var(--foreground)', lineHeight: 1.7 }}>
+          {verdict}
+        </p>
+        <p className="text-sm max-w-2xl" style={{ color: 'var(--foreground-muted)', lineHeight: 1.7 }}>
+          Full feature breakdown, pricing details, and pros & cons below.
         </p>
       </div>
 
@@ -148,7 +206,7 @@ export default async function ComparePage({ params }: Props) {
 
       {/* Feature comparison table */}
       <section className="mb-14">
-        <h2 className="text-xl font-bold text-white mb-5">Feature Comparison</h2>
+        <h2 className="text-xl font-bold text-white mb-5">How Do {tool1.name} and {tool2.name} Compare on Features?</h2>
         <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
           {/* Header row */}
           <div
@@ -201,7 +259,7 @@ export default async function ComparePage({ params }: Props) {
 
       {/* Pros & Cons */}
       <section className="mb-14">
-        <h2 className="text-xl font-bold text-white mb-5">Pros & Cons</h2>
+        <h2 className="text-xl font-bold text-white mb-5">{tool1.name} Pros and Cons vs {tool2.name}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[tool1, tool2].map((tool, idx) => (
             <div key={tool.slug} className="card p-6">
@@ -235,7 +293,7 @@ export default async function ComparePage({ params }: Props) {
 
       {/* When to choose */}
       <section className="mb-14">
-        <h2 className="text-xl font-bold text-white mb-5">When to Choose Each</h2>
+        <h2 className="text-xl font-bold text-white mb-5">Should You Use {tool1.name} or {tool2.name}?</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {[
             { tool: tool1, color: '#a5b4fc', bg: 'rgba(99,102,241,0.08)', border: 'rgba(99,102,241,0.25)' },
