@@ -92,7 +92,7 @@ export default function HomePage() {
 
       {/* Trust bar */}
       <section className="border border-gray-800 rounded-2xl p-8 text-center bg-gray-900/30">
-        <h2 className="text-lg font-bold text-white mb-2">Why DevTools.fyi?</h2>
+        <h2 className="text-lg font-bold text-white mb-2">Why DevVs.io?</h2>
         <p className="text-gray-400 text-sm max-w-xl mx-auto mb-6">
           We cover pricing, features, pros & cons, and alternatives for every tool — so you can stop wasting hours reading marketing pages and just pick the right tool.
         </p>
