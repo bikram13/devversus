@@ -25,7 +25,7 @@ export default function ComparisonsPage() {
     <div className="max-w-6xl mx-auto px-5 py-12">
 
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
         <Link href="/" className="hover:text-white transition-colors">Home</Link>
         <span>/</span>
         <span className="text-white">Comparisons</span>

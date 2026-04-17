@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <div className="max-w-3xl mx-auto px-5 py-12">
-      <nav className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
+      <nav aria-label="Breadcrumb" className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
         <Link href="/" className="hover:text-white transition-colors">Home</Link>
         <span>/</span>
         <span className="text-white">Terms of Service</span>
