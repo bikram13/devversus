@@ -3,6 +3,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getToolBySlug, getCategoryForTool, getAllAlternativePages } from '@/data/tools'
 import AffiliateDisclosure from '@/components/AffiliateDisclosure'
+import ToolLogo from '@/components/ToolLogo'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -198,12 +199,13 @@ export default async function AlternativesPage({ params }: Props) {
           <div key={alt!.slug} className="card p-6">
             <div className="flex items-start justify-between gap-4 mb-4">
               <div className="flex items-center gap-3">
-                <span
-                  className="w-8 h-8 rounded-xl flex items-center justify-center text-sm font-bold shrink-0"
-                  style={{ background: 'var(--accent-dim)', color: 'var(--accent)' }}
-                >
-                  {i + 1}
-                </span>
+                <div className="relative shrink-0">
+                  <ToolLogo domain={alt!.website} name={alt!.name} size={36} />
+                  <span className="absolute -top-1 -left-1 w-4 h-4 rounded-full flex items-center justify-center text-xs font-bold"
+                    style={{ background: 'var(--accent)', color: 'white', fontSize: 9 }}>
+                    {i + 1}
+                  </span>
+                </div>
                 <div>
                   <div className="flex items-center gap-2.5 flex-wrap">
                     <h2 className="text-lg font-bold text-white">{alt!.name}</h2>

@@ -68,7 +68,7 @@ export default function AboutPage() {
           <p className="text-sm mt-3">The &ldquo;When to Choose&rdquo; sections are derived directly from each tool&apos;s strengths — not from vendor positioning. If a tool&apos;s biggest pro is &ldquo;free tier is generous,&rdquo; that&apos;s what we say, even if the vendor would prefer we lead with something else.</p>
         </section>
 
-        <section>
+        <section id="affiliate">
           <h2 className="text-xl font-bold text-white mb-4">Affiliate Links</h2>
           <p className="text-sm">Some &ldquo;Visit →&rdquo; links are affiliate links. We earn a small commission if you sign up through them, at no extra cost to you. This revenue helps keep the site free and updated. It does not affect which tools we feature or how we compare them.</p>
         </section>

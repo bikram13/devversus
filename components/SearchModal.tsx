@@ -102,7 +102,7 @@ export default function SearchModal({ items }: Props) {
         }}
         aria-label="Search tools"
       >
-        <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <svg aria-hidden="true" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
         </svg>
         <span>Search</span>
@@ -135,7 +135,7 @@ export default function SearchModal({ items }: Props) {
         >
           {/* Search input */}
           <div className="flex items-center gap-3 px-4 py-3.5" style={{ borderBottom: '1px solid var(--border)' }}>
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: 'var(--foreground-muted)', flexShrink: 0 }}>
+            <svg aria-hidden="true" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: 'var(--foreground-muted)', flexShrink: 0 }}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
@@ -191,7 +191,7 @@ export default function SearchModal({ items }: Props) {
                       <p className="text-xs truncate" style={{ color: 'var(--foreground-muted)' }}>{item.subtitle}</p>
                     </div>
                     {i === activeIndex && (
-                      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: 'var(--accent)', flexShrink: 0 }}>
+                      <svg aria-hidden="true" width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ color: 'var(--accent)', flexShrink: 0 }}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                       </svg>
                     )}

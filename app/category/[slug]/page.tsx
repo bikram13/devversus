@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import type { Metadata } from 'next'
 import { CATEGORIES, getCategoryBySlug, getToolsByCategory, getAllComparisons } from '@/data/tools'
+import ToolLogo from '@/components/ToolLogo'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -110,12 +111,7 @@ export default async function CategoryPage({ params }: Props) {
             <div key={tool.slug} className="card p-5 group">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm shrink-0"
-                    style={{ background: 'var(--accent-dim)', color: 'var(--accent)' }}
-                  >
-                    {tool.name.charAt(0)}
-                  </div>
+                  <ToolLogo domain={tool.website} name={tool.name} size={40} />
                   <div>
                     <h2 className="text-base font-bold text-white leading-tight">{tool.name}</h2>
                     {tool.startingPrice && (

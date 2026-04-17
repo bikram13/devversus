@@ -55,6 +55,7 @@ export default function FilterableComparisons({
       {/* Search bar */}
       <div className="relative mb-8">
         <svg
+          aria-hidden="true"
           className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4"
           style={{ color: 'var(--foreground-muted)' }}
           fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}
@@ -138,6 +139,7 @@ export default function FilterableComparisons({
                     {item.tool1Name} vs {item.tool2Name}
                   </span>
                   <svg
+                    aria-hidden="true"
                     className="w-3.5 h-3.5 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity"
                     style={{ color: 'var(--accent)' }}
                     fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import './globals.css'
 import CursorTrail from '@/components/CursorTrail'
 import SearchModal from '@/components/SearchModal'
+import CookieNotice from '@/components/CookieNotice'
 import { buildSearchIndex } from '@/data/search-index'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </header>
 
         <main className="relative z-10">{children}</main>
+        <CookieNotice />
 
         <footer className="relative z-10 mt-32 border-t" style={{ borderColor: 'var(--border)' }}>
           <div className="max-w-6xl mx-auto px-5 py-12">
@@ -125,6 +127,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <Link href="/privacy" className="nav-link">Privacy</Link>
                 <Link href="/terms"   className="nav-link">Terms</Link>
                 <Link href="/contact" className="nav-link">Contact</Link>
+                <Link href="/about#affiliate" className="nav-link">Affiliate Disclosure</Link>
               </div>
             </div>
           </div>

@@ -209,52 +209,42 @@ export default async function ComparePage({ params }: Props) {
       <section className="mb-14">
         <h2 className="text-xl font-bold text-white mb-5">How Do {tool1.name} and {tool2.name} Compare on Features?</h2>
         <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
-          {/* Header row */}
-          <div
-            className="grid grid-cols-3 px-6 py-3.5 text-sm font-semibold"
-            style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--border)', color: 'var(--foreground-muted)' }}
-          >
-            <span>Feature</span>
-            <span className="text-center text-white">{tool1.name}</span>
-            <span className="text-center text-white">{tool2.name}</span>
-          </div>
-
-          {/* Pricing row */}
-          {[
-            { label: 'Pricing model', v1: <span className="capitalize text-white">{tool1.pricing}</span>, v2: <span className="capitalize text-white">{tool2.pricing}</span> },
-            { label: 'Starting price', v1: <span className="text-white">{tool1.startingPrice ?? 'Free'}</span>, v2: <span className="text-white">{tool2.startingPrice ?? 'Free'}</span> },
-          ].map(row => (
-            <div key={row.label} className="grid grid-cols-3 px-6 py-4 text-sm" style={{ borderBottom: '1px solid var(--border)' }}>
-              <span style={{ color: 'var(--foreground-muted)' }}>{row.label}</span>
-              <span className="text-center">{row.v1}</span>
-              <span className="text-center">{row.v2}</span>
-            </div>
-          ))}
-
-          {/* Feature rows */}
-          {allFeatures.map((feat, i) => {
-            const t1Has = tool1.features.includes(feat)
-            const t2Has = tool2.features.includes(feat)
-            return (
-              <div
-                key={feat}
-                className="grid grid-cols-3 px-6 py-3.5 text-sm"
-                style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}
-              >
-                <span style={{ color: 'var(--foreground-muted)' }}>{feat}</span>
-                <span className="text-center">
-                  {t1Has
-                    ? <span className="text-green-400 font-bold">✓</span>
-                    : <span style={{ color: 'var(--foreground-muted)' }}>—</span>}
-                </span>
-                <span className="text-center">
-                  {t2Has
-                    ? <span className="text-green-400 font-bold">✓</span>
-                    : <span style={{ color: 'var(--foreground-muted)' }}>—</span>}
-                </span>
-              </div>
-            )
-          })}
+          <table className="w-full text-sm" style={{ borderCollapse: 'collapse' }}>
+            <thead>
+              <tr style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--border)' }}>
+                <th scope="col" className="px-6 py-3.5 text-left font-semibold" style={{ color: 'var(--foreground-muted)' }}>Feature</th>
+                <th scope="col" className="px-6 py-3.5 text-center font-semibold text-white">{tool1.name}</th>
+                <th scope="col" className="px-6 py-3.5 text-center font-semibold text-white">{tool2.name}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                <th scope="row" className="px-6 py-4 text-left font-normal" style={{ color: 'var(--foreground-muted)' }}>Pricing model</th>
+                <td className="px-6 py-4 text-center"><span className="capitalize text-white">{tool1.pricing}</span></td>
+                <td className="px-6 py-4 text-center"><span className="capitalize text-white">{tool2.pricing}</span></td>
+              </tr>
+              <tr style={{ borderBottom: '1px solid var(--border)' }}>
+                <th scope="row" className="px-6 py-4 text-left font-normal" style={{ color: 'var(--foreground-muted)' }}>Starting price</th>
+                <td className="px-6 py-4 text-center"><span className="text-white">{tool1.startingPrice ?? 'Free'}</span></td>
+                <td className="px-6 py-4 text-center"><span className="text-white">{tool2.startingPrice ?? 'Free'}</span></td>
+              </tr>
+              {allFeatures.map((feat, i) => {
+                const t1Has = tool1.features.includes(feat)
+                const t2Has = tool2.features.includes(feat)
+                return (
+                  <tr key={feat} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}>
+                    <th scope="row" className="px-6 py-3.5 text-left font-normal" style={{ color: 'var(--foreground-muted)' }}>{feat}</th>
+                    <td className="px-6 py-3.5 text-center">
+                      {t1Has ? <span className="text-green-400 font-bold">✓</span> : <span style={{ color: 'var(--foreground-muted)' }}>—</span>}
+                    </td>
+                    <td className="px-6 py-3.5 text-center">
+                      {t2Has ? <span className="text-green-400 font-bold">✓</span> : <span style={{ color: 'var(--foreground-muted)' }}>—</span>}
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
         </div>
       </section>
 
