@@ -3,9 +3,7 @@ import Link from 'next/link'
 import type { Metadata } from 'next'
 import { getAllComparisons, getToolBySlug, getCategoryForTool } from '@/data/tools'
 
-interface Props {
-  params: Promise<{ slug: string }>
-}
+interface Props { params: Promise<{ slug: string }> }
 
 export async function generateStaticParams() {
   return getAllComparisons().map(({ slug }) => ({ slug }))
@@ -13,10 +11,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const [slug1, ...rest] = slug.split('-vs-')
-  const slug2 = rest.join('-vs-')
-  const tool1 = getToolBySlug(slug1)
-  const tool2 = getToolBySlug(slug2)
+  const vsIndex = slug.indexOf('-vs-')
+  if (vsIndex === -1) return {}
+  const tool1 = getToolBySlug(slug.substring(0, vsIndex))
+  const tool2 = getToolBySlug(slug.substring(vsIndex + 4))
   if (!tool1 || !tool2) return {}
   return {
     title: `${tool1.name} vs ${tool2.name} (${new Date().getFullYear()}) — Features, Pricing & Differences`,
@@ -24,15 +22,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-function Badge({ label }: { label: string }) {
-  const colors: Record<string, string> = {
-    free: 'bg-green-500/10 text-green-400 border-green-500/20',
-    freemium: 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-    paid: 'bg-orange-500/10 text-orange-400 border-orange-500/20',
-    'open-source': 'bg-purple-500/10 text-purple-400 border-purple-500/20',
+function PricingBadge({ label }: { label: string }) {
+  const cls: Record<string, string> = {
+    free:        'badge-free',
+    freemium:    'badge-freemium',
+    paid:        'badge-paid',
+    'open-source': 'badge-open-source',
   }
   return (
-    <span className={`text-xs border px-2 py-0.5 rounded-full font-medium capitalize ${colors[label] ?? 'bg-gray-800 text-gray-400 border-gray-700'}`}>
+    <span className={`text-xs px-2.5 py-0.5 rounded-full font-medium capitalize ${cls[label] ?? 'badge-freemium'}`}>
       {label}
     </span>
   )
@@ -43,112 +41,137 @@ export default async function ComparePage({ params }: Props) {
   const vsIndex = slug.indexOf('-vs-')
   if (vsIndex === -1) notFound()
 
-  const slug1 = slug.substring(0, vsIndex)
-  const slug2 = slug.substring(vsIndex + 4)
-
-  const tool1 = getToolBySlug(slug1)
-  const tool2 = getToolBySlug(slug2)
+  const tool1 = getToolBySlug(slug.substring(0, vsIndex))
+  const tool2 = getToolBySlug(slug.substring(vsIndex + 4))
   if (!tool1 || !tool2) notFound()
 
-  const category = getCategoryForTool(slug1)
+  const category = getCategoryForTool(tool1.slug)
   const year = new Date().getFullYear()
+  const allFeatures = Array.from(new Set([...tool1.features, ...tool2.features]))
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
+    <div className="max-w-5xl mx-auto px-5 py-12">
+
       {/* Breadcrumb */}
-      <nav className="text-sm text-gray-500 mb-8 flex items-center gap-2">
-        <Link href="/" className="hover:text-gray-300 transition">Home</Link>
+      <nav className="flex items-center gap-2 text-sm mb-10" style={{ color: 'var(--foreground-muted)' }}>
+        <Link href="/" className="hover:text-white transition-colors">Home</Link>
         <span>/</span>
-        {category && <Link href={`/category/${category.slug}`} className="hover:text-gray-300 transition capitalize">{category.name}</Link>}
-        {category && <span>/</span>}
-        <span className="text-gray-300">{tool1.name} vs {tool2.name}</span>
+        {category && (
+          <>
+            <Link href={`/category/${category.slug}`} className="hover:text-white transition-colors capitalize">
+              {category.name}
+            </Link>
+            <span>/</span>
+          </>
+        )}
+        <span className="text-white">{tool1.name} vs {tool2.name}</span>
       </nav>
 
       {/* Header */}
-      <h1 className="text-3xl md:text-4xl font-black text-white mb-3">
-        {tool1.name} vs {tool2.name} ({year})
-      </h1>
-      <p className="text-gray-400 mb-10 max-w-2xl">
-        A detailed comparison of {tool1.name} and {tool2.name} — pricing, features, pros & cons, and which one to pick for your use case.
-      </p>
-
-      {/* Quick Verdict */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
-        <div className="border border-gray-800 rounded-2xl p-6 bg-gray-900/40">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xl font-bold text-white">{tool1.name}</h2>
-            <Badge label={tool1.pricing} />
-          </div>
-          <p className="text-gray-400 text-sm mb-4 leading-relaxed">{tool1.description}</p>
-          {tool1.startingPrice && (
-            <p className="text-sm text-gray-300 mb-4">
-              <span className="text-gray-500">Starting at </span>
-              <span className="font-semibold">{tool1.startingPrice}</span>
-            </p>
-          )}
-          <a
-            href={tool1.affiliateUrl ?? tool1.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition font-medium"
-          >
-            Visit {tool1.name} →
-          </a>
-        </div>
-
-        <div className="border border-gray-800 rounded-2xl p-6 bg-gray-900/40">
-          <div className="flex items-center justify-between mb-3">
-            <h2 className="text-xl font-bold text-white">{tool2.name}</h2>
-            <Badge label={tool2.pricing} />
-          </div>
-          <p className="text-gray-400 text-sm mb-4 leading-relaxed">{tool2.description}</p>
-          {tool2.startingPrice && (
-            <p className="text-sm text-gray-300 mb-4">
-              <span className="text-gray-500">Starting at </span>
-              <span className="font-semibold">{tool2.startingPrice}</span>
-            </p>
-          )}
-          <a
-            href={tool2.affiliateUrl ?? tool2.website}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block text-sm bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-lg transition font-medium"
-          >
-            Visit {tool2.name} →
-          </a>
-        </div>
+      <div className="mb-12">
+        <h1 className="text-3xl md:text-5xl font-black text-white mb-4 leading-tight">
+          {tool1.name} <span style={{ color: 'var(--foreground-muted)' }}>vs</span> {tool2.name}
+          <span className="text-2xl font-bold ml-3" style={{ color: 'var(--foreground-muted)' }}>({year})</span>
+        </h1>
+        <p className="text-base max-w-2xl" style={{ color: 'var(--foreground-muted)', lineHeight: 1.7 }}>
+          A detailed comparison of {tool1.name} and {tool2.name} — pricing, features,
+          pros & cons, and which one to pick for your use case.
+        </p>
       </div>
 
-      {/* Features Comparison Table */}
-      <section className="mb-12">
+      {/* Quick-verdict cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-14">
+        {[tool1, tool2].map((tool, idx) => (
+          <div key={tool.slug} className="card p-7" style={{ borderColor: idx === 0 ? 'rgba(99,102,241,0.3)' : 'rgba(139,92,246,0.3)' }}>
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center font-bold text-sm"
+                  style={{ background: idx === 0 ? 'rgba(99,102,241,0.15)' : 'rgba(139,92,246,0.15)', color: idx === 0 ? '#a5b4fc' : '#c084fc' }}>
+                  {tool.name.charAt(0)}
+                </div>
+                <h2 className="text-xl font-bold text-white">{tool.name}</h2>
+              </div>
+              <PricingBadge label={tool.pricing} />
+            </div>
+
+            <p className="text-sm mb-5 leading-relaxed" style={{ color: 'var(--foreground-muted)' }}>
+              {tool.description}
+            </p>
+
+            {tool.startingPrice && (
+              <p className="text-sm mb-5">
+                <span style={{ color: 'var(--foreground-muted)' }}>Starting at </span>
+                <span className="font-bold text-white">{tool.startingPrice}</span>
+              </p>
+            )}
+
+            <a
+              href={tool.affiliateUrl ?? tool.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-semibold px-4 py-2.5 rounded-xl transition-all duration-200"
+              style={{
+                background: idx === 0 ? 'var(--accent)' : 'rgba(139,92,246,0.8)',
+                color: 'white',
+                boxShadow: idx === 0 ? '0 0 20px rgba(99,102,241,0.35)' : '0 0 20px rgba(139,92,246,0.25)',
+              }}
+            >
+              Visit {tool.name}
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M7 17L17 7M7 7h10v10" />
+              </svg>
+            </a>
+          </div>
+        ))}
+      </div>
+
+      {/* Feature comparison table */}
+      <section className="mb-14">
         <h2 className="text-xl font-bold text-white mb-5">Feature Comparison</h2>
-        <div className="border border-gray-800 rounded-2xl overflow-hidden">
-          <div className="grid grid-cols-3 bg-gray-900/60 px-6 py-3 text-sm font-semibold text-gray-400">
+        <div className="rounded-2xl overflow-hidden" style={{ border: '1px solid var(--border)' }}>
+          {/* Header row */}
+          <div
+            className="grid grid-cols-3 px-6 py-3.5 text-sm font-semibold"
+            style={{ background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid var(--border)', color: 'var(--foreground-muted)' }}
+          >
             <span>Feature</span>
-            <span className="text-center">{tool1.name}</span>
-            <span className="text-center">{tool2.name}</span>
+            <span className="text-center text-white">{tool1.name}</span>
+            <span className="text-center text-white">{tool2.name}</span>
           </div>
+
           {/* Pricing row */}
-          <div className="grid grid-cols-3 px-6 py-4 border-t border-gray-800/60 text-sm">
-            <span className="text-gray-400 font-medium">Pricing model</span>
-            <span className="text-center text-white capitalize">{tool1.pricing}</span>
-            <span className="text-center text-white capitalize">{tool2.pricing}</span>
-          </div>
-          {/* Starting price row */}
-          <div className="grid grid-cols-3 px-6 py-4 border-t border-gray-800/60 text-sm bg-gray-900/20">
-            <span className="text-gray-400 font-medium">Starting price</span>
-            <span className="text-center text-white">{tool1.startingPrice ?? 'Free'}</span>
-            <span className="text-center text-white">{tool2.startingPrice ?? 'Free'}</span>
-          </div>
-          {/* Feature rows from union */}
-          {Array.from(new Set([...tool1.features, ...tool2.features])).map((feat, i) => {
+          {[
+            { label: 'Pricing model', v1: <span className="capitalize text-white">{tool1.pricing}</span>, v2: <span className="capitalize text-white">{tool2.pricing}</span> },
+            { label: 'Starting price', v1: <span className="text-white">{tool1.startingPrice ?? 'Free'}</span>, v2: <span className="text-white">{tool2.startingPrice ?? 'Free'}</span> },
+          ].map(row => (
+            <div key={row.label} className="grid grid-cols-3 px-6 py-4 text-sm" style={{ borderBottom: '1px solid var(--border)' }}>
+              <span style={{ color: 'var(--foreground-muted)' }}>{row.label}</span>
+              <span className="text-center">{row.v1}</span>
+              <span className="text-center">{row.v2}</span>
+            </div>
+          ))}
+
+          {/* Feature rows */}
+          {allFeatures.map((feat, i) => {
             const t1Has = tool1.features.includes(feat)
             const t2Has = tool2.features.includes(feat)
             return (
-              <div key={feat} className={`grid grid-cols-3 px-6 py-4 border-t border-gray-800/60 text-sm ${i % 2 === 0 ? '' : 'bg-gray-900/20'}`}>
-                <span className="text-gray-400">{feat}</span>
-                <span className="text-center">{t1Has ? '✓' : '—'}</span>
-                <span className="text-center">{t2Has ? '✓' : '—'}</span>
+              <div
+                key={feat}
+                className="grid grid-cols-3 px-6 py-3.5 text-sm"
+                style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.015)' }}
+              >
+                <span style={{ color: 'var(--foreground-muted)' }}>{feat}</span>
+                <span className="text-center">
+                  {t1Has
+                    ? <span className="text-green-400 font-bold">✓</span>
+                    : <span style={{ color: 'var(--foreground-muted)' }}>—</span>}
+                </span>
+                <span className="text-center">
+                  {t2Has
+                    ? <span className="text-green-400 font-bold">✓</span>
+                    : <span style={{ color: 'var(--foreground-muted)' }}>—</span>}
+                </span>
               </div>
             )
           })}
@@ -156,71 +179,61 @@ export default async function ComparePage({ params }: Props) {
       </section>
 
       {/* Pros & Cons */}
-      <section className="mb-12">
+      <section className="mb-14">
         <h2 className="text-xl font-bold text-white mb-5">Pros & Cons</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-gray-800 rounded-2xl p-6">
-            <h3 className="font-bold text-white mb-4">{tool1.name}</h3>
-            <div className="space-y-2 mb-4">
-              {tool1.pros.map(p => (
-                <div key={p} className="flex items-start gap-2 text-sm text-gray-300">
-                  <span className="text-green-400 mt-0.5 shrink-0">+</span>{p}
+          {[tool1, tool2].map((tool, idx) => (
+            <div key={tool.slug} className="card p-6">
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold"
+                  style={{ background: idx === 0 ? 'rgba(99,102,241,0.15)' : 'rgba(139,92,246,0.15)', color: idx === 0 ? '#a5b4fc' : '#c084fc' }}>
+                  {tool.name.charAt(0)}
                 </div>
-              ))}
+                <h3 className="font-bold text-white">{tool.name}</h3>
+              </div>
+              <div className="space-y-2.5 mb-4">
+                {tool.pros.map(p => (
+                  <div key={p} className="flex items-start gap-2.5 text-sm" style={{ color: 'var(--foreground)' }}>
+                    <span className="text-green-400 mt-0.5 shrink-0 font-bold">+</span>
+                    <span>{p}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="space-y-2.5">
+                {tool.cons.map(c => (
+                  <div key={c} className="flex items-start gap-2.5 text-sm" style={{ color: 'var(--foreground-muted)' }}>
+                    <span className="text-red-400 mt-0.5 shrink-0 font-bold">−</span>
+                    <span>{c}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="space-y-2">
-              {tool1.cons.map(c => (
-                <div key={c} className="flex items-start gap-2 text-sm text-gray-400">
-                  <span className="text-red-400 mt-0.5 shrink-0">−</span>{c}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="border border-gray-800 rounded-2xl p-6">
-            <h3 className="font-bold text-white mb-4">{tool2.name}</h3>
-            <div className="space-y-2 mb-4">
-              {tool2.pros.map(p => (
-                <div key={p} className="flex items-start gap-2 text-sm text-gray-300">
-                  <span className="text-green-400 mt-0.5 shrink-0">+</span>{p}
-                </div>
-              ))}
-            </div>
-            <div className="space-y-2">
-              {tool2.cons.map(c => (
-                <div key={c} className="flex items-start gap-2 text-sm text-gray-400">
-                  <span className="text-red-400 mt-0.5 shrink-0">−</span>{c}
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </section>
 
       {/* When to choose */}
-      <section className="mb-12">
+      <section className="mb-14">
         <h2 className="text-xl font-bold text-white mb-5">When to Choose Each</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="border border-indigo-500/30 bg-indigo-500/5 rounded-2xl p-6">
-            <h3 className="font-bold text-indigo-300 mb-3">Choose {tool1.name} if…</h3>
-            <ul className="space-y-2">
-              {tool1.pros.slice(0, 3).map(p => (
-                <li key={p} className="text-sm text-gray-300 flex items-start gap-2">
-                  <span className="text-indigo-400 shrink-0">•</span>{p}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="border border-purple-500/30 bg-purple-500/5 rounded-2xl p-6">
-            <h3 className="font-bold text-purple-300 mb-3">Choose {tool2.name} if…</h3>
-            <ul className="space-y-2">
-              {tool2.pros.slice(0, 3).map(p => (
-                <li key={p} className="text-sm text-gray-300 flex items-start gap-2">
-                  <span className="text-purple-400 shrink-0">•</span>{p}
-                </li>
-              ))}
-            </ul>
-          </div>
+          {[
+            { tool: tool1, color: '#a5b4fc', bg: 'rgba(99,102,241,0.08)', border: 'rgba(99,102,241,0.25)' },
+            { tool: tool2, color: '#c084fc', bg: 'rgba(139,92,246,0.08)', border: 'rgba(139,92,246,0.25)' },
+          ].map(({ tool, color, bg, border }) => (
+            <div key={tool.slug} className="rounded-2xl p-6" style={{ background: bg, border: `1px solid ${border}` }}>
+              <h3 className="font-bold mb-4 text-sm" style={{ color }}>
+                Choose {tool.name} if…
+              </h3>
+              <ul className="space-y-2.5">
+                {tool.pros.slice(0, 3).map(p => (
+                  <li key={p} className="text-sm flex items-start gap-2" style={{ color: 'var(--foreground)' }}>
+                    <span className="shrink-0 mt-0.5" style={{ color }}>•</span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -228,14 +241,23 @@ export default async function ComparePage({ params }: Props) {
       {category && (
         <section>
           <h2 className="text-xl font-bold text-white mb-5">More {category.name} Comparisons</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {getAllComparisons()
               .filter(c => (c.tool1.category === category.slug || c.tool2.category === category.slug) && c.slug !== slug)
               .slice(0, 6)
               .map(c => (
-                <Link key={c.slug} href={`/compare/${c.slug}`}
-                  className="border border-gray-800 rounded-xl px-4 py-3 text-sm hover:border-indigo-500/40 hover:text-indigo-300 text-gray-300 transition">
-                  {c.tool1.name} vs {c.tool2.name}
+                <Link
+                  key={c.slug}
+                  href={`/compare/${c.slug}`}
+                  className="card group p-4 flex items-center justify-between cursor-pointer"
+                >
+                  <span className="text-sm text-white group-hover:text-indigo-300 transition-colors">
+                    {c.tool1.name} vs {c.tool2.name}
+                  </span>
+                  <svg className="w-4 h-4 opacity-40 group-hover:opacity-100 transition-opacity" style={{ color: 'var(--accent)' }}
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
               ))}
           </div>
