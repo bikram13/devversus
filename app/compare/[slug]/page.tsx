@@ -19,6 +19,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `${tool1.name} vs ${tool2.name} (${new Date().getFullYear()}) — Features, Pricing & Differences`,
     description: `Compare ${tool1.name} and ${tool2.name} side by side. See pricing, features, pros & cons to decide which is right for your project.`,
+    alternates: {
+      canonical: `https://devversus.com/compare/${slug}`,
+    },
   }
 }
 
@@ -49,7 +52,25 @@ export default async function ComparePage({ params }: Props) {
   const year = new Date().getFullYear()
   const allFeatures = Array.from(new Set([...tool1.features, ...tool2.features]))
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `${tool1.name} vs ${tool2.name} — Feature & Pricing Comparison`,
+    description: `Compare ${tool1.name} and ${tool2.name} side by side. See pricing, features, pros & cons to decide which is right for your project.`,
+    url: `https://devversus.com/compare/${slug}`,
+    numberOfItems: 2,
+    itemListElement: [tool1, tool2].map((tool, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: tool.name,
+      url: tool.website,
+      description: tool.description,
+    })),
+  }
+
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <div className="max-w-5xl mx-auto px-5 py-12">
 
       {/* Breadcrumb */}
@@ -264,5 +285,6 @@ export default async function ComparePage({ params }: Props) {
         </section>
       )}
     </div>
+    </>
   )
 }

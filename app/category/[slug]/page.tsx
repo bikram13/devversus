@@ -16,6 +16,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Best ${cat.name} Tools (${new Date().getFullYear()}) — Compared & Ranked`,
     description: `Compare the best ${cat.name.toLowerCase()} tools side by side. Pricing, features, and honest reviews to help you pick the right tool.`,
+    alternates: {
+      canonical: `https://devversus.com/category/${slug}`,
+    },
   }
 }
 
@@ -43,7 +46,25 @@ export default async function CategoryPage({ params }: Props) {
     c => c.tool1.category === slug || c.tool2.category === slug
   )
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Best ${category.name} Tools (${new Date().getFullYear()})`,
+    description: `Compare the best ${category.name.toLowerCase()} tools side by side. Pricing, features, and honest reviews.`,
+    url: `https://devversus.com/category/${slug}`,
+    numberOfItems: tools.length,
+    itemListElement: tools.map((tool, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: tool.name,
+      url: tool.website,
+      description: tool.tagline,
+    })),
+  }
+
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <div className="max-w-5xl mx-auto px-5 py-12">
 
       {/* Breadcrumb */}
@@ -161,5 +182,6 @@ export default async function CategoryPage({ params }: Props) {
         </section>
       )}
     </div>
+    </>
   )
 }

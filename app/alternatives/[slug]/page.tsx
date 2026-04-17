@@ -16,6 +16,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: `Best Alternatives to ${tool.name} (${new Date().getFullYear()}) — Free & Paid Options`,
     description: `Looking for ${tool.name} alternatives? We compared ${tool.alternatives.length}+ options so you can find the best replacement for your use case and budget.`,
+    alternates: {
+      canonical: `https://devversus.com/alternatives/${slug}`,
+    },
   }
 }
 
@@ -44,7 +47,25 @@ export default async function AlternativesPage({ params }: Props) {
   const category = getCategoryForTool(slug)
   const year = new Date().getFullYear()
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Best Alternatives to ${tool.name} (${year})`,
+    description: `Looking for ${tool.name} alternatives? We compared ${alternatives.length}+ options so you can find the best replacement for your use case and budget.`,
+    url: `https://devversus.com/alternatives/${slug}`,
+    numberOfItems: alternatives.length,
+    itemListElement: alternatives.map((alt, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: alt!.name,
+      url: alt!.website,
+      description: alt!.description,
+    })),
+  }
+
   return (
+    <>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     <div className="max-w-4xl mx-auto px-5 py-12">
 
       {/* Breadcrumb */}
@@ -225,5 +246,6 @@ export default async function AlternativesPage({ params }: Props) {
         </div>
       </section>
     </div>
+    </>
   )
 }
