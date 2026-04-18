@@ -2,7 +2,7 @@
 *Trigger: context window nearing limit (auto-compact imminent)*
 
 ## Project
-**Directory:** `/Users/bikram/Documents/AI Company/devtools-compare`
+**Directory:** `/Users/bikram/Documents/AI Company/products/devtools-compare`
 
 ## Uncommitted Changes
 ```
