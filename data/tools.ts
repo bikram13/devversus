@@ -67,6 +67,7 @@ const BASE_TOOLS: Tool[] = [
     pricing: 'freemium',
     startingPrice: '$5/month',
 
+    affiliateUrl: 'https://railway.com?referralCode=kiAgOl',
     affiliatePayout: '15% recurring for 12 months, no approval',
     features: ['One-click deploys', 'Built-in databases', 'Environment variables', 'Custom domains', 'Usage-based pricing', 'GPU support'],
     pros: ['Supports backend apps and databases', 'Simple pricing model', 'Full-stack in one place', 'No cold starts on paid plans'],
@@ -139,6 +140,7 @@ const BASE_TOOLS: Tool[] = [
     pricing: 'paid',
     startingPrice: '$4/month',
 
+    affiliateUrl: 'https://m.do.co/c/8587e77638bc',
     affiliatePayout: '10% of referred spend for 12 months',
     features: ['Droplets (VPS)', 'App Platform (PaaS)', 'Managed Kubernetes (DOKS)', 'Managed databases', 'Spaces (object storage)', 'Load balancers', 'GPU Droplets'],
     pros: ['Developer-friendly pricing', 'Predictable billing', 'Strong community and tutorials', 'GPU access for AI workloads', 'App Platform for zero-infra deploys'],
@@ -154,6 +156,7 @@ const BASE_TOOLS: Tool[] = [
     website: 'https://www.hostinger.com',
     pricing: 'paid',
     startingPrice: '$2.99/month',
+    affiliateUrl: 'https://www.hostinger.com/in?REFERRALCODE=WHS31NATH3PA',
 
     affiliatePayout: '40-60% per sale, instant approval',
     features: ['Shared hosting', 'VPS hosting', 'Cloud hosting', 'WordPress hosting', 'hPanel control panel', 'LiteSpeed servers', 'Free SSL'],

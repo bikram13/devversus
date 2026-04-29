@@ -19,8 +19,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const tool2 = getToolBySlug(slug.substring(vsIndex + 4))
   if (!tool1 || !tool2) return {}
   return {
-    title: `${tool1.name} vs ${tool2.name} (${new Date().getFullYear()}) — Features, Pricing & Differences`,
-    description: `Compare ${tool1.name} and ${tool2.name} side by side. See pricing, features, pros & cons to decide which is right for your project.`,
+    title: `${tool1.name} vs ${tool2.name} (${new Date().getFullYear()}): Which One Should You Pick?`,
+    description: `${tool1.name} vs ${tool2.name} compared head-to-head: pricing, features, pros, cons, and which tool wins for your use case. Independent review, no vendor bias.`,
     alternates: {
       canonical: `https://devversus.com/compare/${slug}`,
     },

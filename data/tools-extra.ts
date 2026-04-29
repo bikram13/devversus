@@ -474,7 +474,7 @@ export const EXTRA_TOOLS_1: Tool[] = [
     features: ['Vite-powered', 'Jest-compatible API', 'TypeScript native', 'ESM support', 'Watch mode', 'Coverage via v8/istanbul'],
     pros: ['Much faster than Jest', 'Native ESM', 'Same config as Vite', 'Jest API compatible', 'TypeScript out of box'],
     cons: ['Newer than Jest', 'Smaller community', 'Requires Vite setup for best experience'],
-    alternatives: ['jest', 'mocha', 'playwright'],
+    alternatives: ['jest', 'playwright', 'cypress', 'mocha', 'webdriverio', 'selenium'],
   },
   {
     slug: 'selenium',

@@ -2174,9 +2174,9 @@ export const EXTRA_TOOLS_2: Tool[] = [
   },
   {
     slug: 'qwik',
-    name: 'Qwik City',
+    name: 'Qwik',
     tagline: 'Resumable JavaScript framework for instant apps',
-    description: 'Qwik City is the meta-framework for Qwik — a JS framework that introduces resumability (no hydration) to deliver instant-loading applications even with complex interactivity.',
+    description: 'Qwik is a JavaScript framework that introduces resumability (no hydration) to deliver instant-loading applications even with complex interactivity. Its meta-framework, Qwik City, adds routing and SSR.',
     category: 'js-framework',
     website: 'https://qwik.dev',
     pricing: 'open-source',
@@ -2184,7 +2184,7 @@ export const EXTRA_TOOLS_2: Tool[] = [
     features: ['Resumability (no hydration)', 'Instant page load', 'React-like components (JSX)', 'Server actions', 'Lazy loading everything', 'Builder.io backing', 'TypeScript'],
     pros: ['Fastest time to interactive', 'No hydration overhead', 'React-like syntax', 'Innovative architecture'],
     cons: ['Very small community', 'Different mental model (resumability)', 'Limited ecosystem', 'Production risk for early adopters'],
-    alternatives: ['astro', 'solidjs', 'nextjs'],
+    alternatives: ['nextjs', 'astro', 'sveltekit', 'remix', 'nuxt', 'solidjs'],
   },
 
   // ── component-library ─────────────────────────────────────────────

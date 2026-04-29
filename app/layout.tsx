@@ -1,7 +1,9 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import Link from 'next/link'
+import Script from 'next/script'
 import './globals.css'
+import { Analytics } from '@vercel/analytics/next'
 import CursorTrail from '@/components/CursorTrail'
 import SearchModal from '@/components/SearchModal'
 import CookieNotice from '@/components/CookieNotice'
@@ -15,7 +17,7 @@ export const metadata: Metadata = {
     default: 'DevVersus — Compare Developer Tools & Find Alternatives',
     template: '%s | DevVersus',
   },
-  description: 'Compare the best developer tools and SaaS products side by side. Find alternatives to Vercel, Stripe, Supabase, and 350+ more tools used by developers.',
+  description: 'Side-by-side comparisons of 350+ developer tools. Independent pricing, features, and alternatives for Vercel, Stripe, Supabase, Postman and more — no vendor bias.',
   openGraph: { siteName: 'DevVersus', type: 'website' },
   twitter:   { card: 'summary_large_image' },
 }
@@ -132,6 +134,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+        <Analytics />
+        <Script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3924266766208841"
+          crossOrigin="anonymous"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   )
