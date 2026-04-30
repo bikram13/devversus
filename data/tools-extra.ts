@@ -1127,7 +1127,7 @@ export const EXTRA_TOOLS_1: Tool[] = [
     features: ['MDX support', 'Versioned docs', 'Blog', 'Search integration', 'i18n', 'Customizable React theme'],
     pros: ['Free and open source', 'Versioned documentation', 'MDX for interactive docs', 'Meta-backed', 'Great SEO'],
     cons: ['Requires developer to set up', 'React-heavy (bundle size)', 'Less visual than Mintlify'],
-    alternatives: ['mintlify', 'gitbook', 'nextra'],
+    alternatives: ['mintlify', 'docsmith', 'gitbook', 'nextra'],
   },
   {
     slug: 'readme-io',
@@ -1141,7 +1141,7 @@ export const EXTRA_TOOLS_1: Tool[] = [
     features: ['API explorer', 'OpenAPI import', 'Metrics & analytics', 'Custom domain', 'Versioning', 'Changelogs'],
     pros: ['Best interactive API documentation', 'API usage analytics', 'Non-technical editor-friendly', 'OpenAPI import'],
     cons: ['Expensive', 'Less control than self-hosted options', 'Vendor-hosted'],
-    alternatives: ['mintlify', 'gitbook', 'docusaurus'],
+    alternatives: ['mintlify', 'docsmith', 'gitbook', 'docusaurus'],
   },
   {
     slug: 'nextra',
@@ -1154,7 +1154,7 @@ export const EXTRA_TOOLS_1: Tool[] = [
     features: ['Next.js + MDX', 'Full-text search', 'Syntax highlighting', 'Dark mode', 'i18n', 'Custom themes'],
     pros: ['Free and open source', 'Next.js native', 'Great default theme', 'MDX support', 'Fast build'],
     cons: ['Requires developer setup', 'Smaller community than Docusaurus', 'Less feature-rich than Mintlify'],
-    alternatives: ['mintlify', 'docusaurus', 'gitbook'],
+    alternatives: ['mintlify', 'docsmith', 'docusaurus', 'gitbook'],
   },
   {
     slug: 'confluence',

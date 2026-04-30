@@ -1244,7 +1244,7 @@ const BASE_TOOLS: Tool[] = [
     features: ['Block editor', 'Git sync', 'AI writing assistant', 'Custom domains', 'Team collaboration', 'API reference'],
     pros: ['Beautiful default design', 'Git sync for version control', 'AI writing support', 'Great free tier for open source'],
     cons: ['Expensive per-user pricing', 'Limited customization vs Mintlify', 'Can be slow to load'],
-    alternatives: ['mintlify', 'readme', 'docusaurus'],
+    alternatives: ['mintlify', 'docsmith', 'readme-io', 'docusaurus'],
   },
   {
     slug: 'mintlify',
@@ -1258,7 +1258,21 @@ const BASE_TOOLS: Tool[] = [
     features: ['MDX-based', 'API playground', 'AI chat widget', 'Custom components', 'Analytics', 'Git-based workflow'],
     pros: ['Most beautiful docs out of the box', 'API playground built-in', 'MDX-based (developer-friendly)', 'Used by major companies'],
     cons: ['Expensive paid tier', 'Less flexible than writing your own', 'Opinionated structure'],
-    alternatives: ['gitbook', 'readme', 'docusaurus'],
+    alternatives: ['gitbook', 'readme-io', 'docsmith', 'docusaurus'],
+  },
+  {
+    slug: 'docsmith',
+    name: 'Docsmith',
+    tagline: 'AI-generated API docs from any OpenAPI spec',
+    description: 'Docsmith turns an OpenAPI 2.0 / 3.0 specification into complete, branded API documentation in 60 seconds. AI generates endpoint descriptions, parameter tables, working curl examples, and an error-code reference. Output is plain HTML and Markdown that you self-host.',
+    category: 'documentation',
+    website: 'https://docsmithai.com',
+    pricing: 'freemium',
+    startingPrice: '$19/month (free tier: 1 doc/month)',
+    features: ['OpenAPI 2.0 + 3.0 (JSON or YAML)', 'AI endpoint descriptions', 'Auto-generated curl examples', 'Parameter tables', 'Error-code reference', 'HTML + Markdown export', 'Self-hosted output'],
+    pros: ['Generates full docs in 60 seconds (no manual writing)', '~1/8th the price of ReadMe or Mintlify Pro', 'Plain HTML/Markdown output you fully own', 'Free tier with full feature access', 'No team-seat upsell, no enterprise quote tier'],
+    cons: ['One-shot generator, not a docs CMS — no collaborative editing', 'Self-hosted output, not a hosted portal', 'AI tone may need light editing for brand voice'],
+    alternatives: ['mintlify', 'readme-io', 'gitbook', 'docusaurus', 'nextra'],
   },
 
   // SUBSCRIPTION MANAGEMENT
