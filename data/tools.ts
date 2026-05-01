@@ -1272,7 +1272,7 @@ const BASE_TOOLS: Tool[] = [
     features: ['OpenAPI 2.0 + 3.0 (JSON or YAML)', 'AI endpoint descriptions', 'Auto-generated curl examples', 'Parameter tables', 'Error-code reference', 'HTML + Markdown export', 'Self-hosted output'],
     pros: ['Generates full docs in 60 seconds (no manual writing)', '~1/8th the price of ReadMe or Mintlify Pro', 'Plain HTML/Markdown output you fully own', 'Free tier with full feature access', 'No team-seat upsell, no enterprise quote tier'],
     cons: ['One-shot generator, not a docs CMS — no collaborative editing', 'Self-hosted output, not a hosted portal', 'AI tone may need light editing for brand voice'],
-    alternatives: ['mintlify', 'readme-io', 'gitbook', 'docusaurus', 'nextra'],
+    alternatives: ['mintlify', 'readme-io', 'stoplight', 'redocly', 'apidog', 'gitbook', 'docusaurus', 'nextra'],
   },
 
   // SUBSCRIPTION MANAGEMENT
