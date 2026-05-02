@@ -34,7 +34,7 @@ export const PRODUCTS = {
     title: 'Auth.js → Better Auth Migration Playbook',
     subtitle:
       'A step-by-step guide for moving a production Next.js app from NextAuth (Auth.js) to Better Auth — schema changes, session handling, and the gotchas the docs skip.',
-    price: '$29',
+    price: '$39',
     url: 'https://nathbikram.gumroad.com/l/auth-js-to-better-auth-migration-playbook',
   },
   docsmith: {
@@ -43,7 +43,7 @@ export const PRODUCTS = {
     title: 'Docsmith Pro — generate API docs from your codebase',
     subtitle:
       'A self-hosted toolkit for turning a TypeScript or Python codebase into Mintlify-style API documentation. Pairs well with whichever doc platform you pick below.',
-    price: '$49',
+    price: '$19',
     url: 'https://nathbikram.gumroad.com/l/szdwyz',
   },
   nextStarter: {
