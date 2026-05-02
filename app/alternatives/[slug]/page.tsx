@@ -4,6 +4,8 @@ import type { Metadata } from 'next'
 import { getToolBySlug, getCategoryForTool, getAllAlternativePages } from '@/data/tools'
 import AffiliateDisclosure from '@/components/AffiliateDisclosure'
 import ToolLogo from '@/components/ToolLogo'
+import ProductCTA from '@/components/ProductCTA'
+import { getCtaForAlternativesSlug } from '@/components/productCtaMap'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -84,6 +86,11 @@ export default async function AlternativesPage({ params }: Props) {
 
   const category = getCategoryForTool(slug)
   const year = new Date().getFullYear()
+
+  // Optional companion-product CTA (rendered only when this anchor tool
+  // matches one of the founder's Gumroad products — see
+  // components/productCtaMap.ts for the mapping rules).
+  const cta = getCtaForAlternativesSlug(slug)
 
   const itemListSchema = {
     '@context': 'https://schema.org',
@@ -282,6 +289,21 @@ export default async function AlternativesPage({ params }: Props) {
           </div>
         )}
       </div>
+
+      {/* Companion-product CTA — placed after the "you're replacing" context
+          card so readers see it before the long alternatives table. Only
+          renders when this anchor tool strongly matches a Gumroad product. */}
+      {cta && (
+        <ProductCTA
+          title={cta.title}
+          subtitle={cta.subtitle}
+          price={cta.price}
+          url={cta.url}
+          badge={cta.badge}
+          productSlug={cta.productSlug}
+          pageSlug={`alternatives/${slug}`}
+        />
+      )}
 
       <section className="mb-12">
         <h2 className="text-xl font-bold text-white mb-4">Quick comparison</h2>

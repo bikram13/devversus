@@ -4,6 +4,8 @@ import type { Metadata } from 'next'
 import { getAllComparisons, getToolBySlug, getCategoryForTool } from '@/data/tools'
 import AffiliateDisclosure from '@/components/AffiliateDisclosure'
 import ToolLogo from '@/components/ToolLogo'
+import ProductCTA from '@/components/ProductCTA'
+import { getCtaForComparisonSlug } from '@/components/productCtaMap'
 
 interface Props { params: Promise<{ slug: string }> }
 
@@ -123,6 +125,11 @@ export default async function ComparePage({ params }: Props) {
   // TL;DR verdict text (used in both the UI and speakable schema)
   const verdict = `${tool1.name} is better for teams that need ${tool1.pros[0]?.toLowerCase() ?? 'advanced features'}. ${tool2.name} is the stronger choice if ${tool2.pros[0]?.toLowerCase() ?? 'simplicity matters'}. ${tool1.name} is ${tool1.pricing}${tool1.startingPrice ? ` (from ${tool1.startingPrice})` : ''} and ${tool2.name} is ${tool2.pricing}${tool2.startingPrice ? ` (from ${tool2.startingPrice})` : ''}.`
 
+  // Optional companion-product CTA (rendered only when the page topic is a
+  // strong match for one of the founder's Gumroad products — see
+  // components/productCtaMap.ts for the mapping rules).
+  const cta = getCtaForComparisonSlug(slug)
+
   return (
     <>
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(softwareSchema) }} />
@@ -204,6 +211,21 @@ export default async function ComparePage({ params }: Props) {
           </div>
         ))}
       </div>
+
+      {/* Companion-product CTA — placed after the verdict cards so readers
+          see it before scrolling into the long feature table. Only renders
+          when the page topic strongly matches a Gumroad product. */}
+      {cta && (
+        <ProductCTA
+          title={cta.title}
+          subtitle={cta.subtitle}
+          price={cta.price}
+          url={cta.url}
+          badge={cta.badge}
+          productSlug={cta.productSlug}
+          pageSlug={`compare/${slug}`}
+        />
+      )}
 
       {/* Feature comparison table */}
       <section className="mb-14">
