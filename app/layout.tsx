@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/next'
 import CursorTrail from '@/components/CursorTrail'
 import SearchModal from '@/components/SearchModal'
 import CookieNotice from '@/components/CookieNotice'
+import EmailCapturePopup from '@/components/EmailCapturePopup'
 import { buildSearchIndex } from '@/data/search-index'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
@@ -93,6 +94,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <main className="relative z-10">{children}</main>
         <CookieNotice />
+        <EmailCapturePopup />
 
         <footer className="relative z-10 mt-32 border-t" style={{ borderColor: 'var(--border)' }}>
           <div className="max-w-6xl mx-auto px-5 py-12">
