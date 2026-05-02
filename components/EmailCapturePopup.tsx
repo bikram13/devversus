@@ -218,9 +218,9 @@ export default function EmailCapturePopup() {
               className="text-sm leading-relaxed"
               style={{ color: 'var(--foreground-muted)' }}
             >
-              Thanks! We&rsquo;ll send your Better Auth quick-reference card to
-              your inbox within 24 hours. Keep an eye on your spam folder just
-              in case.
+              Your Better Auth quick-reference card is on its way to your
+              inbox. If you don&rsquo;t see it in a minute, check your spam
+              folder.
             </p>
             <button
               type="button"
